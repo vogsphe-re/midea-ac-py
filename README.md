@@ -1,4 +1,6 @@
-Updated home-assistant component for hass version 0.108.0 and the "climate-1.0" changes.
+
+This is a custom component for home assistant to integrate the Midea Air Conditioners via the Local area network.
+Tested with hass version 0.108.0
 
 ## Installation
 
