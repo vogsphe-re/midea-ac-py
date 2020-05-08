@@ -42,3 +42,10 @@ climate:
     host: 192.168.1.200
     id: 543210987654321
 ```
+
+## 赞赏一下?
+
+- [via Paypal](https://www.paypal.me/himaczhou)
+- [via Bitcoin](bitcoin:3GAvud4ZcppF5xeTPEqF9FcX2buvTsi2Hy) (**3GAvud4ZcppF5xeTPEqF9FcX2buvTsi2Hy**)
+- [via AliPay(支付宝)](https://i.loli.net/2020/05/08/nNSTAPUGDgX2sBe.png)
+- [via WeChatPay(微信)](https://i.loli.net/2020/05/08/ouj6SdnVirDzRw9.jpg)
