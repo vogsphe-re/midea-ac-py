@@ -1,15 +1,18 @@
 
-This is a custom component for home assistant to integrate the Midea Air Conditioners via the Local area network.
+English Version | [中文版](./README_CN.md#)
+
+This is a custom component for Home Assistant to integrate the Midea Air Conditioners via the Local area network.
+
 Tested with hass version 0.108.0
 
 ## Installation
 
-### HACS 
+### Install from HACS
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
-1. Search the HACS Store for Midea
-2. Install the Midea Aircon component
 
-### Manual
+Please Waiting...
+
+### Install manually
 1. Clone this repo
 2. Place the `custom_components/midea` folder into your `custom_components` folder
 
