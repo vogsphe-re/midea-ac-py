@@ -1,9 +1,9 @@
 {
         "domain": "midea",
-        "name": "Midea Aircon",
+        "name": "Midea Smart Aircon",
         "documentation": "",
-        "requirements": ["midea-andersonshatch==0.1.11", "pycryptodome"],
+        "requirements": ["msmart==0.1.11", "pycryptodome"],
         "dependencies": [],
-        "codeowners": ["@andersonshatch"],
-        "homeassistant": "0.96.0"
+        "codeowners": ["@mac_zhou"],
+        "homeassistant": "0.108.0"
 }
