@@ -24,6 +24,17 @@ Please Waiting...
 **id (必填)** | 美的空调的applianceId. | 123456789012345
 **use_fan_only_workaround (可选)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
 
+**How to Get applianceId(如何获取设备id):**
+
+- 如果你使用安卓手机，可以使用adb logcat命令，从log中获取:
+```shell
+adb logcat | grep -i deviceid
+```
+
+- 如果你使用iPhone和macOS设备的话，可以将iPhone用数据线连到macOS，从控制台log中筛选applianceId
+
+- 如果以上环境和条件，你都不具备的话，你需要对空调进行抓包，抓包后的文件可以用[pcap-decrypt.py](./pcap-decrypt.py#)从中获取，记得使用int部分的数字
+
 **Example configuration.yaml (配置文件示例) :**
 * 单台设备
 ```yaml
@@ -43,7 +54,7 @@ climate:
     id: 543210987654321
 ```
 
-## 赞赏一下?
+## 赞赏一下, 请我喝杯咖啡?
 
 - [via Paypal](https://www.paypal.me/himaczhou)
 - [via Bitcoin](bitcoin:3GAvud4ZcppF5xeTPEqF9FcX2buvTsi2Hy) (**3GAvud4ZcppF5xeTPEqF9FcX2buvTsi2Hy**)

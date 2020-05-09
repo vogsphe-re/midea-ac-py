@@ -26,6 +26,17 @@ key | description | example
 **id (Required)** | Midea AC Device's applianceId. | 123456789012345
 **use_fan_only_workaround (Optional)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
 
+**How to Get applianceId:**
+
+- if you use android，you can use ```adb```，filter from log:
+```shell
+adb logcat | grep -i deviceid
+```
+
+- if you use iPhone，iPhone connects to macOS with a data cable and filters the applianceId from the console log
+
+- If you do not have the above environment and conditions, you need to capture the air conditioner and save the files, after can be used [pcap-decrypt.py](./pcap-decrypt.py#) to Get. Remember to use the number, not hex string.
+
 **Example configuration.yaml:**
 * Single device
 ```yaml
