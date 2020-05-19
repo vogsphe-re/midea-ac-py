@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Feature request （功能需求）
 about: Suggest an idea for this project
 title: ''
 labels: enhancement
@@ -7,14 +7,9 @@ assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
-
-**Describe the solution you'd like**
+**Describe the solution you'd like （描述需求）**
 A clear and concise description of what you want to happen.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+**Screenshots / Logs / Pcap File（屏幕截图/日志/抓包文件）**
+If applicable, add screenshots or your home-assistant log file or pcap file to help explain your problem.
+请提交相关截图，日志，抓包让开发者能够更快的解决问题
