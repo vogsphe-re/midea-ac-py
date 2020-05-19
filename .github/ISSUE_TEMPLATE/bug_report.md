@@ -1,31 +1,20 @@
 ---
-name: Bug report
-about: Something is not working right
+name: Bug report (错误报告)
+about: Something is not working right (运行不正常)
 title: ''
 labels: bug
 assignees: ''
 
 ---
 
-**Describe the bug**
+**Describe the bug （描述一下问题）**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Screenshots / Logs / Pcap File（屏幕截图/日志/抓包文件）**
+If applicable, add screenshots or your home-assistant log file or pcap file to help explain your problem.
+请提交相关截图，日志，抓包让开发者能够更快的解决问题
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots / Logs**
-If applicable, add screenshots or your home-assistant log file to help explain your problem.
-
-**Versions**
+**Versions (版本信息)**
  - Home Assistant version: 
- - Midea integration version (commit hash): 
+ - Midea msmart version: 
 
-**Additional context**
-Add any other context about the problem here.
