@@ -14,14 +14,14 @@ Please Waiting...
 
 ### Install manually
 1. Clone this repo
-2. Place the `custom_components/midea` folder into your `custom_components` folder
+2. Place the `custom_components/midea_ac` folder into your `custom_components` folder
 
 ## Configuration
 
 **Configuration variables:**  
 key | description | example 
 :--- | :--- | :---
-**platform (Required)** | The platform name. | midea
+**platform (Required)** | The platform name. | midea_ac
 **host (Required)** | Midea AC Device's IP Address. | 192.168.1.100
 **id (Required)** | Midea AC Device's applianceId. | 123456789012345
 **use_fan_only_workaround (Optional)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
@@ -41,17 +41,17 @@ adb logcat | grep -i deviceid
 * Single device
 ```yaml
 climate:
-  - platform: midea
+  - platform: midea_ac
     host: 192.168.1.100
     id: 123456789012345
 ```
 * Multiple device
 ```yaml
 climate:
-  - platform: midea
+  - platform: midea_ac
     host: 192.168.1.100
     id: 123456789012345
-  - platform: midea
+  - platform: midea_ac
     host: 192.168.1.200
     id: 543210987654321
 ```

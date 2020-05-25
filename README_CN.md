@@ -12,14 +12,14 @@ Please Waiting...
 
 ### Install manually (手工安装)
 1. 克隆此仓库
-2. 将 `custom_components/midea` 目录复制到你的 `custom_components` 目录下
+2. 将 `custom_components/midea_ac` 目录复制到你的 `custom_components` 目录下
 
 ## Configuration (配置)
 
 **Configuration variables (配置变量说明):**  
 参数 | 说明 | 示例 
 :--- | :--- | :---
-**platform (必填)** | 插件名称 | midea
+**platform (必填)** | 插件名称 | midea_ac
 **host (必填)** | 美的空调的IP地址 | 192.168.1.100
 **id (必填)** | 美的空调的applianceId. | 123456789012345
 **use_fan_only_workaround (可选)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
@@ -33,23 +33,23 @@ adb logcat | grep -i deviceid
 
 - 如果你使用iPhone和macOS设备的话，可以将iPhone用数据线连到macOS，从控制台log中筛选applianceId
 
-- 如果以上环境和条件，你都不具备的话，你需要对空调进行抓包，抓包后的文件可以用[pcap-decrypt.py](./pcap-decrypt.py#)从中获取，记得使用int部分的数字
+- 如果你都不具备以上环境，你需要对空调进行抓包，抓包后的文件可以用[pcap-decrypt.py](./pcap-decrypt.py#)从中获取，记得使用数字，不是hex字符
 
 **Example configuration.yaml (配置文件示例) :**
 * 单台设备
 ```yaml
 climate:
-  - platform: midea
+  - platform: midea_ac
     host: 192.168.1.100
     id: 123456789012345
 ```
 * 多台设备
 ```yaml
 climate:
-  - platform: midea
+  - platform: midea_ac
     host: 192.168.1.100
     id: 123456789012345
-  - platform: midea
+  - platform: midea_ac
     host: 192.168.1.200
     id: 543210987654321
 ```
