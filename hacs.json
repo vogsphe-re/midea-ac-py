@@ -1,0 +1,6 @@
+
+{
+  "name": "Midea Smart Aircon",
+  "domains": ["climate"],
+  "homeassistant": "0.108.0"
+}
