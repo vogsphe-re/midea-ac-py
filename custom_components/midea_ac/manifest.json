@@ -1,5 +1,5 @@
 {
-        "domain": "midea",
+        "domain": "midea_ac",
         "name": "Midea Smart Aircon",
         "documentation": "",
         "requirements": ["msmart==0.1.13", "pycryptodome"],
