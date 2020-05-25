@@ -166,7 +166,7 @@ class MideaClimateACDevice(ClimateDevice, RestoreEntity):
     @property
     def name(self):
         """Return the name of the climate device."""
-        return "midea_{}".format(self._device.id)
+        return "midea_ac_{}".format(self._device.id)
 
     @property
     def temperature_unit(self):
