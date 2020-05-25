@@ -4,6 +4,5 @@
         "documentation": "",
         "requirements": ["msmart==0.1.13", "pycryptodome"],
         "dependencies": [],
-        "codeowners": ["@mac-zhou"],
-        "homeassistant": "0.108.0"
+        "codeowners": ["@mac-zhou"]
 }
