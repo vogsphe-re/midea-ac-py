@@ -1,5 +1,5 @@
 
-English Version | [中文版](./README_CN.md#)
+English Version | [中文版](./中文.md#)
 
 This is a custom component for Home Assistant to integrate the Midea Air Conditioners via the Local area network.
 
