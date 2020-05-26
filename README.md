@@ -8,9 +8,9 @@ Tested with hass version 0.108.0
 ## Installation
 
 ### Install from HACS
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![Type](https://img.shields.io/badge/Type-Custom_Component-orange.svg)](https://github.com/dlarrick/hass-kumo) [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
-Please Waiting...
+Search the HACS Store for ```midea_ac```
 
 ### Install manually
 1. Clone this repo
