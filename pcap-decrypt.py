@@ -53,7 +53,7 @@ for packet in cap:
     if (not ipaddress.ip_address(packet.ip.src).is_private
             or not ipaddress.ip_address(packet.ip.dst).is_private):
         print("NOT LOCAL: packet to/from Midea Cloud")
-    print("DeviceId: hex: %s int: %d" % (device_id, convert_device_id_int(device_id)))
+    print("applianceId: hex: %s int: %d" % (device_id, convert_device_id_int(device_id)))
     
     if args.print_raw:
         print("RAW: %s" % tcp_data)
