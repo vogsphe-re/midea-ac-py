@@ -28,7 +28,16 @@ key | description | example
 
 **How to Get applianceId:**
 
-- if you use android，you can use ```adb```，filter from log:
+- if you use Midea Air app outside China, there is a easy way to get your deviceid.
+
+1. open Midea Air app, and share the device, you will get a QR Code.
+2. save the QR Code 
+3. upload QR Code Sreenshort to https://zxing.org/w/decode.jspx or decode QR code use other tool.
+4. you will get the data like MADEVICESHARE:<base64_string>
+5. decode base64 string online https://www.base64decode.org/ or use other tool
+6. you will get the device id
+
+- if you use android, you can use ```adb```，filter from log:
 ```shell
 adb logcat | grep -i deviceid
 ```
