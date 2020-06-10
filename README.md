@@ -3,7 +3,7 @@ English Version | [中文版](./中文.md#)
 
 This is a custom component for Home Assistant to integrate the Midea Air Conditioners via the Local area network.
 
-Tested with hass version 0.108.0
+Tested with hass version 0.110.2
 
 ## Installation
 
@@ -27,6 +27,12 @@ key | description | example
 **use_fan_only_workaround (Optional)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
 
 **How to Get applianceId:**
+
+- you can use command ```midea-discover``` to discover midea devices on the host in the same Local area network. Note: This component only supports devices with model 0xac (air conditioner) and words ```supported``` in the output.
+```shell
+pip3 install msmart
+midea-discover
+```
 
 - if you use Midea Air app outside China, there is a easy way to get your deviceid.
 
