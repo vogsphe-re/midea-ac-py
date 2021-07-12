@@ -33,6 +33,7 @@ CONF_PORT = 'port'
 CONF_TEMP_STEP = 'temp_step'
 CONF_INCLUDE_OFF_AS_STATE = 'include_off_as_state'
 CONF_USE_FAN_ONLY_WORKAROUND = 'use_fan_only_workaround'
+CONF_KEEP_LAST_KNOWN_ONLINE_STATE = 'keep_last_known_online_state'
 
 SCAN_INTERVAL = timedelta(seconds=15)
 
@@ -42,7 +43,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_PORT, default=6444): vol.Coerce(int),
     vol.Optional(CONF_TEMP_STEP, default=1.0): vol.Coerce(float),
     vol.Optional(CONF_INCLUDE_OFF_AS_STATE, default=True): vol.Coerce(bool),
-    vol.Optional(CONF_USE_FAN_ONLY_WORKAROUND, default=False): vol.Coerce(bool)
+    vol.Optional(CONF_USE_FAN_ONLY_WORKAROUND, default=False): vol.Coerce(bool),
+    vol.Optional(CONF_KEEP_LAST_KNOWN_ONLINE_STATE, default=False): vol.Coerce(bool)
 })
 
 SUPPORT_FLAGS = SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE \
@@ -61,9 +63,11 @@ async def async_setup_platform(hass, config, async_add_entities,
     temp_step = config.get(CONF_TEMP_STEP)
     include_off_as_state = config.get(CONF_INCLUDE_OFF_AS_STATE)
     use_fan_only_workaround = config.get(CONF_USE_FAN_ONLY_WORKAROUND)
+    keep_last_known_online_state = config.get(CONF_KEEP_LAST_KNOWN_ONLINE_STATE)    
 
     client = midea_device(device_ip, int(device_id), device_port)
     device = client.setup()
+    device.keep_last_known_online_state = keep_last_known_online_state
     entities = []
     entities.append(MideaClimateACDevice(
             hass, device, temp_step, include_off_as_state,
