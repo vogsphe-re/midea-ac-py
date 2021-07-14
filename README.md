@@ -24,15 +24,16 @@ key | description | example
 **platform (Required)** | The platform name. | midea_ac
 **host (Required)** | Midea AC Device's IP Address. | 192.168.1.100
 **id (Required)** | Midea AC Device's applianceId. | 123456789012345
+**prompt_tone (Optional)** | Prompt Tone, default is true. | false
 **use_fan_only_workaround (Optional)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
 
 **How to Get applianceId:**
 
 - you can use command ```midea-discover``` to discover midea devices on the host in the same Local area network. Note: This component only supports devices with model 0xac (air conditioner) and words ```supported``` in the output.
-```shell
-pip3 install msmart
-midea-discover
-```
+    ```shell
+    pip3 install msmart
+    midea-discover
+    ```
 
 - if you use Midea Air app outside China, there is a easy way to get your deviceid.
 
