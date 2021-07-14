@@ -25,6 +25,7 @@ key | description | example
 **host (Required)** | Midea AC Device's IP Address. | 192.168.1.100
 **id (Required)** | Midea AC Device's applianceId. | 123456789012345
 **prompt_tone (Optional)** | Prompt Tone, default is true. | false
+**keep_last_known_online_state (Optional)** | Set this to true if you see too many  `unavailable` in log. | true
 **use_fan_only_workaround (Optional)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
 
 **How to Get applianceId:**
