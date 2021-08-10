@@ -2,6 +2,9 @@ This is a custom component for Home Assistant to integrate the Midea Air Conditi
 
 Tested with hass version 0.110.2
 
+## Attention!!!
+Version >= 0.1.27, the device naming rules have changed.
+
 **Example configuration.yaml:**
 
 ```yaml
@@ -12,41 +15,33 @@ climate:
 ```
 
 **Configuration variables:**  
-  
 key | description | example 
 :--- | :--- | :---
 **platform (Required)** | The platform name. | midea_ac
 **host (Required)** | Midea AC Device's IP Address. | 192.168.1.100
 **id (Required)** | Midea AC Device's applianceId. | 123456789012345
+**token (Optional)** | Midea AC Device's token, V3 is required. | ACEDDA53831AE5DC82AF5424F6ACD6C05852F9A5212406E6BE9B24893C1C411D971D976D7DA7C2127500EDADD89E8A1685B6C8CDAD0B6B11FA52D04225A88557
+**k1 (Optional)** | Midea AC Device's k1, V3 is required. | CFFA10FC4337401782A005623F54DA0BDE12217BEC5A40CA8859642FD5BA9C7C
 **prompt_tone (Optional)** | Prompt Tone, default is true. | false
-**keep_last_known_online_state (Optional)** 
+**keep_last_known_online_state (Optional)** | Set this to true if you see too many  `unavailable` in log. | true
 **use_fan_only_workaround (Optional)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
 
 **How to Get applianceId:**
 
 - you can use command ```midea-discover``` to discover midea devices on the host in the same Local area network. Note: This component only supports devices with model 0xac (air conditioner) and words ```supported``` in the output.
+    ```shell
+    pip3 install msmart
+    midea-discover
+    ```
+
+**How to Get Token and K1:**
+- If your device's version is V2, please ignore.
+- If you are in China, please install [meiju-gettoken-only-china.apk](https://media.githubusercontent.com/media/mac-zhou/LFS/main/meiju-gettoken-only-china.apk) first.
+- Use ```adb```，filter from logcat:
 ```shell
-pip3 install msmart
-midea-discover
+adb logcat | grep doKeyAgree
 ```
-
-- if you use Midea Air app outside China, there is a easy way to get your deviceid.
-
-1. open Midea Air app, and share the device, you will get a QR Code.
-2. save the QR Code 
-3. upload QR Code Sreenshort to https://zxing.org/w/decode.jspx or decode QR code use other tool.
-4. you will get the data like MADEVICESHARE:<base64_string>
-5. decode base64 string online https://www.base64decode.org/ or use other tool
-6. you will get the device id
-
-- if you use android, you can use ```adb```，filter from log:
-```shell
-adb logcat | grep -i deviceid
-```
-
-- if you use iPhone，iPhone connects to macOS with a data cable and filters the applianceId from the console log
-
-- If you do not have the above environment and conditions, you need to capture the air conditioner and save the files, after can be used [pcap-decrypt.py](./pcap-decrypt.py#) to Get. Remember to use the number, not hex string.
+- If you are overseas, please help to add how to get, not surprisingly, the keyword is also `doKeyAgree`
 
 **Example configuration.yaml:**
 * Single device
@@ -55,6 +50,15 @@ climate:
   - platform: midea_ac
     host: 192.168.1.100
     id: 123456789012345
+```
+* V3 device
+```yaml
+climate:
+  - platform: midea_ac
+    host: 192.168.1.101
+    id: 123456789012345
+    token: ACEDDA53831AE5DC82AF5424F6ACD6C05852F9A5212406E6BE9B24893C1C411D971D976D7DA7C2127500EDADD89E8A1685B6C8CDAD0B6B11FA52D04225A88557
+    k1: CFFA10FC4337401782A005623F54DA0BDE12217BEC5A40CA8859642FD5BA9C7C
 ```
 * Multiple device
 ```yaml
