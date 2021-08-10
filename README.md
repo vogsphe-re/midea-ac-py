@@ -27,8 +27,8 @@ key | description | example
 **platform (Required)** | The platform name. | midea_ac
 **host (Required)** | Midea AC Device's IP Address. | 192.168.1.100
 **id (Required)** | Midea AC Device's applianceId. | 123456789012345
-**token (Optional)** | Midea AC Device's token, V3 is required. | ACEDDA53831AE5DC82AF5424F6ACD6C05852F9A5212406E6BE9B24893C1C411D971D976D7DA7C2127500EDADD89E8A1685B6C8CDAD0B6B11FA52D04225A88557
-**k1 (Optional)** | Midea AC Device's k1, V3 is required. | CFFA10FC4337401782A005623F54DA0BDE12217BEC5A40CA8859642FD5BA9C7C
+**token (Optional)** | Midea AC Device's token, V3 is required. | ACEDDA53831AE5DC...(Length 128)
+**k1 (Optional)** | Midea AC Device's k1, V3 is required. | CFFA10FC...(Length 64)
 **prompt_tone (Optional)** | Prompt Tone, default is true. | false
 **keep_last_known_online_state (Optional)** | Set this to true if you see too many  `unavailable` in log. | true
 **use_fan_only_workaround (Optional)** | Set this to true if you need to turn off device updates because they turn device on and to fan_only | true
@@ -44,11 +44,13 @@ key | description | example
 **How to Get Token and K1:**
 - If your device's version is V2, please ignore.
 - If you are in China, please install [meiju-gettoken-only-china.apk](https://media.githubusercontent.com/media/mac-zhou/LFS/main/meiju-gettoken-only-china.apk) first.
-- Use ```adb```，filter from logcat:
+- If you are OverSea(Outside China), please install [Midea-Air-gettoken-only-oversea.apk](https://media.githubusercontent.com/media/mac-zhou/LFS/main/Midea-Air-gettoken-only-oversea.apk) first.
+- I just changed the log level of APP, you can modify it yourself.
+- Use `adb`，filter from logcat:
 ```shell
 adb logcat | grep doKeyAgree
 ```
-- If you are overseas, please help to add how to get, not surprisingly, the keyword is also `doKeyAgree`
+- You may need to be patient, it may take 5-30 minutes, you can reopen or relogin.
 
 **Example configuration.yaml:**
 * Single device
@@ -64,8 +66,8 @@ climate:
   - platform: midea_ac
     host: 192.168.1.101
     id: 123456789012345
-    token: ACEDDA53831AE5DC82AF5424F6ACD6C05852F9A5212406E6BE9B24893C1C411D971D976D7DA7C2127500EDADD89E8A1685B6C8CDAD0B6B11FA52D04225A88557
-    k1: CFFA10FC4337401782A005623F54DA0BDE12217BEC5A40CA8859642FD5BA9C7C
+    token: ACEDDA53831AE5DC...(Length 128)
+    k1: CFFA10FC...(Length 64)
 ```
 * Multiple device
 ```yaml
