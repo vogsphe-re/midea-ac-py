@@ -3,12 +3,12 @@ This is a custom component for Home Assistant to integrate the Midea Air Conditi
 Tested with hass version 0.110.2
 
 ## Attention!!!
-Version >= 0.1.27, the device naming rules have changed.
+Version >= 0.1.27, The ENTITY ID of the climate devices has been changed. if you have any problem with an old entity being "unavailable", you should check whats the new ID name of the entity and change it in lovlace.
 
 ## Installation
 
 ### Install from HACS
-[![Type](https://img.shields.io/badge/Type-Custom_Component-orange.svg)](https://github.com/dlarrick/hass-kumo) [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![Type](https://img.shields.io/badge/Type-Custom_Component-orange.svg)](https://github.com/mac-zhou/midea-ac-py) [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
 Search the HACS Store for ```midea_ac```
 
@@ -53,11 +53,12 @@ climate:
 ## How to Get Token and K1:
 - If your device's version is V2, please ignore.
 - Use Android phone or emulator (which can use bridge, such as [LDPlayer](https://en.ldplayer.net/?from=en)) `must be in the same LAN as the device`.
-- If you are in China, please install [meiju-gettoken-only-china.apk](https://media.githubusercontent.com/media/mac-zhou/LFS/main/meiju-gettoken-only-china.apk).
-- If you are OverSea(Outside China), please install [Midea-Air-gettoken-only-oversea.apk](https://media.githubusercontent.com/media/mac-zhou/LFS/main/Midea-Air-gettoken-only-oversea.apk).
+- If you are in China, please install [meiju-gettoken-only-china.apk](https://www.mediafire.com/file/ma4exquqa5rhy8f/meiju-gettoken-only-china.apk/file).
+- If you are OverSea(Outside China), please install [Midea-Air-gettoken-only-oversea.apk](https://www.mediafire.com/file/g38vhkdf4r3icbv/Midea-Air-gettoken-only-oversea.apk/file).
 - **I just changed the log level of APP, you can modify it yourself**.
 - You may need to be patient, it may take 5-30 minutes, you can reopen or relogin APP.
 - Use `adb`，filter from logcat:
+
   ***shell:***
   ```shell
   adb logcat | grep doKeyAgree
