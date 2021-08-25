@@ -1,6 +1,6 @@
-This is a custom component for Home Assistant to integrate the Midea Air Conditioners via the Local area network.
+Home Assistant Custom Integration for Midea Group(Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and much more) Air Conditioners via LAN.
 
-Tested with hass version 0.110.2
+Tested with Home Assistant 2021.7.2.
 
 ## Attention!!!
 Version >= 0.1.27, the device naming rules have changed.
