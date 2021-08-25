@@ -1,6 +1,6 @@
-This is a custom component for Home Assistant to integrate the Midea Air Conditioners via the Local area network.
+Home Assistant Custom Integration for Midea Group(Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and much more) Air Conditioners via LAN.
 
-Tested with hass version 0.110.2
+Tested with Home Assistant 2021.7.2.
 
 ## Attention!!!
 Version >= 0.1.27, The ENTITY ID of the climate devices has been changed. if you have any problem with an old entity being "unavailable", you should check whats the new ID name of the entity and change it in lovlace.
@@ -42,32 +42,20 @@ climate:
     # k1: CFFA10FC...(Length 64)
 ```
 
-## How to Get ApplianceId:
+## How to Get ApplianceId, Token and K1:
 - Use command `midea-discover` to discover midea devices on the host in the same LAN. 
-  Note: This component only supports devices with model 0xac (air conditioner) and words `supported` in the output. V3(8370) need to get token and k1.
+  Note: This component only supports devices with model 0xac (air conditioner) and words `supported` in the output. V3 need to get token and k1.
     ```shell
     pip3 install msmart
     midea-discover
     ```
-
-## How to Get Token and K1:
-- If your device's version is V2, please ignore.
-- Use Android phone or emulator (which can use bridge, such as [LDPlayer](https://en.ldplayer.net/?from=en)) `must be in the same LAN as the device`.
-- If you are in China, please install [meiju-gettoken-only-china.apk](https://www.mediafire.com/file/ma4exquqa5rhy8f/meiju-gettoken-only-china.apk/file).
-- If you are OverSea(Outside China), please install [Midea-Air-gettoken-only-oversea.apk](https://www.mediafire.com/file/g38vhkdf4r3icbv/Midea-Air-gettoken-only-oversea.apk/file).
-- **I just changed the log level of APP, you can modify it yourself**.
-- You may need to be patient, it may take 5-30 minutes, you can reopen or relogin APP.
-- Use `adb`，filter from logcat:
-
-  ***shell:***
-  ```shell
-  adb logcat | grep doKeyAgree
-  ```
-  ***cmd:***
-  ```cmd
-  adb logcat | findstr doKeyAgree
-  ```
-
+- `midea-discover` use a registered account of Midea Air APP [[AppStore]](https://apps.apple.com/app/midea-air/id1007999530) [[GooglePlay]](https://play.google.com/store/apps/details?id=com.midea.aircondition.obm) to get Token and K1(key).
+it's my account, but now it’s an open account.
+If you just only get Token and K1(key) with this account, I and others can't get your information through this account.
+Don't use this account to login to the APP and add device, this may reveal your information. Of course, you can use your own account，this is also the way I recommend.
+    ```shell
+    midea-discover -a YOUR_ACCOUNT -p YOUR_PASSWORD
+    ```
 
 ## Buy me a cup of coffee
 
