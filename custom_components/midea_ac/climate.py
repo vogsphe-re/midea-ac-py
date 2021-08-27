@@ -28,6 +28,7 @@ from homeassistant.helpers.restore_state import RestoreEntity
 _LOGGER = logging.getLogger(__name__)
 
 CONF_HOST = 'host'
+CONF_TYPE = 'type'
 CONF_ID = 'id'
 CONF_TOKEN = 'token'
 CONF_K1 = 'k1'
@@ -42,6 +43,7 @@ SCAN_INTERVAL = timedelta(seconds=15)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
+    vol.Optional(CONF_TYPE, default=0xac): vol.Coerce(int),
     vol.Required(CONF_ID): cv.string,
     vol.Optional(CONF_TOKEN, default=""): cv.string,
     vol.Optional(CONF_K1, default=""): cv.string,
@@ -59,11 +61,12 @@ SUPPORT_FLAGS = SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE \
 
 async def async_setup_platform(hass, config, async_add_entities,
                                discovery_info=None):
-    """Set up the Midea cloud service and query appliances."""
+    """Set up the Midea lan service and query appliances."""
 
     from msmart.device import air_conditioning_device as ac
 
     device_ip = config.get(CONF_HOST)
+    device_type = config.get(CONF_TYPE)
     device_id = config.get(CONF_ID)
     device_token = config.get(CONF_TOKEN)
     device_k1 = config.get(CONF_K1)
@@ -75,6 +78,7 @@ async def async_setup_platform(hass, config, async_add_entities,
     keep_last_known_online_state = config.get(CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
 
     device = ac(device_ip, int(device_id), device_port)
+    device.type = device_type
     if device_token and device_k1:
         device.authenticate(device_k1, device_token)
     # device = client.setup()
@@ -102,8 +106,8 @@ class MideaClimateACDevice(ClimateEntity, RestoreEntity):
         if include_off_as_state:
             self._operation_list.append("off")
         self._support_flags = SUPPORT_FLAGS
-        #the LED display on the AC should use the same unit as that in homeassistant
-        device.farenheit_unit = (hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
+        # the LED display on the AC should use the same unit as that in homeassistant
+        device.fahrenheit_unit = (hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
         self._device = device
         self._unit_of_measurement = TEMP_CELSIUS
         self._target_temperature_step = temp_step
