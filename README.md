@@ -37,7 +37,7 @@ climate:
   - platform: midea_ac
     host: 192.168.1.100
     id: 123456789012345
-    # v3 need token and id
+    # v3 need token and k1(key)
     # token: ACEDDA53831AE5DC...(Length 128)
     # k1: CFFA10FC...(Length 64)
 ```
