@@ -19,6 +19,7 @@ Search the HACS Store for ```midea_ac```
 ## Configuration
 
 **Configuration variables:**  
+
 key | description | example 
 :--- | :--- | :---
 **platform (Required)** | The platform name. | midea_ac
