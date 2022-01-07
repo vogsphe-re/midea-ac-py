@@ -43,18 +43,39 @@ climate:
     # k1: CFFA10FC...(Length 64)
 ```
 
-## How to Get ApplianceId, Token and K1:
-- Use command `midea-discover` to discover midea devices on the host in the same LAN. 
-  Note: This component only supports devices with model 0xac (air conditioner) and words `supported` in the output. V3 need to get token and k1.
-    ```shell
+## How to Get Configuration variables:
+- `midea-discover` can help you discover Midea devices from the LAN.
+  ```zsh
     pip3 install msmart
     midea-discover
-    ```
-- `midea-discover` use a registered account of Midea Air APP [[AppStore]](https://apps.apple.com/app/midea-air/id1007999530) [[GooglePlay]](https://play.google.com/store/apps/details?id=com.midea.aircondition.obm) to get Token and K1(key).
-it's my account, but now it’s an open account.
-If you just only get Token and K1(key) with this account, I and others can't get your information through this account.
-Don't use this account to login to the APP and add device, this may reveal your information. Of course, you can use your own account，this is also the way I recommend.
-    ```shell
+  ```
+  - Basic Usage
+  ```
+  Usage: midea-discover [OPTIONS]
+
+    Discover Midea Deivces and Get Device's info
+
+  Options:
+    -d, --debug           Enable debug logging
+    -c, --amount INTEGER  Number of broadcast packets, default is 1.
+                          if you have many devices, you may change this value.
+    -a, --account TEXT    Your email address for your Midea account.
+    -p, --password TEXT   Your password for your Midea account.
+    -i, --ip TEXT         IP address of Midea device. you can use:
+                          - broadcasts don't work.
+                          - just get one device's info.
+                          - an error occurred.
+    --help                Show this message and exit.
+  ```
+  ***Note***: 
+  - This component only supports devices with model 0xac (air conditioner) and words `supported` in the output. 
+  - Configure v3 devices need `token` and `k1`.
+  - You `midea-discover`  when broadcasts don't work.
+  - `midea-discover` use a registered account of Midea Air APP [[AppStore]](https://apps.apple.com/app/midea-air/id1007999530) [[GooglePlay]](https://play.google.com/store/apps/details?id=com.midea.aircondition.obm) to get Token and K1(key).
+  it's my account, but now it’s an open account.
+  If you just only get Token and K1(key) with this account, I and others can't get your information through this account.
+  Don't use this account to login to the APP and add device, this may reveal your information. Of course, you can use your own account，this is also the way I recommend.
+    ```zsh
     midea-discover -a YOUR_ACCOUNT -p YOUR_PASSWORD
     ```
 
