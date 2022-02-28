@@ -3,7 +3,7 @@
         "name": "Midea Smart Aircon",
         "version": "0.2.0",
         "documentation": "",
-        "requirements": ["msmart==0.2.0", "pycryptodome", "pycryptodomex", "click"],
+        "requirements": ["msmart==git+https://github.com/mac-zhou/midea-msmart", "pycryptodome", "pycryptodomex", "click"],
         "dependencies": [],
         "codeowners": ["@mac-zhou"]
 }
