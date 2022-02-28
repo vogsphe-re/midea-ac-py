@@ -83,6 +83,9 @@ async def async_setup_platform(hass, config, async_add_entities,
         device._protocol_version = 3
         device._token = bytearray.fromhex(device_token)
         device._key = bytearray.fromhex(device_k1)
+        device._lan_service._token = device._token
+        device._lan_service._key = device._key
+        
     # device = client.setup()
     device.prompt_tone = prompt_tone
     device.keep_last_known_online_state = keep_last_known_online_state
