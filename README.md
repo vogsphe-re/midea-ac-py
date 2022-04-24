@@ -71,7 +71,7 @@ climate:
   - This component only supports devices with model 0xac (air conditioner) and words `supported` in the output. 
   - Configure v3 devices need `token` and `k1`.
   - You `midea-discover`  when broadcasts don't work.
-  - `midea-discover` use a registered account of Midea Air APP [[AppStore]](https://apps.apple.com/app/midea-air/id1007999530) [[GooglePlay]](https://play.google.com/store/apps/details?id=com.midea.aircondition.obm) to get Token and K1(key).
+  - `midea-discover` use a registered account of `MSmartHome` [[AppStore]](https://apps.apple.com/sg/app/midea-home/id1254346490) [[GooglePlay]](https://play.google.com/store/apps/details?id=com.midea.ai.overseas) to get Token and K1(key).
   it's my account, but now it’s an open account.
   If you just only get Token and K1(key) with this account, I and others can't get your information through this account.
   Don't use this account to login to the APP and add device, this may reveal your information. Of course, you can use your own account，this is also the way I recommend.
