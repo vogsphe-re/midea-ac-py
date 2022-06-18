@@ -85,16 +85,19 @@ async def async_setup_platform(hass, config, async_add_entities,
         device._key = bytearray.fromhex(device_k1)
         device._lan_service._token = device._token
         device._lan_service._key = device._key
-        
-    # device = client.setup()
-    device.prompt_tone = prompt_tone
-    device.keep_last_known_online_state = keep_last_known_online_state
-    entities = []
-    entities.append(MideaClimateACDevice(
-            hass, device, temp_step, include_off_as_state,
-            use_fan_only_workaround))
 
-    async_add_entities(entities)
+    device.prompt_tone = prompt_tone
+    # Display on the AC should use the same unit as homeassistant
+    device.fahrenheit = (hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
+    device.keep_last_known_online_state = keep_last_known_online_state
+
+    _LOGGER.debug("Getting device capabilities.")
+    await hass.async_add_executor_job(device.get_capabilities)
+
+    async_add_entities([
+        MideaClimateACDevice(hass, device, temp_step,
+                             include_off_as_state, use_fan_only_workaround)
+    ])
 
 
 class MideaClimateACDevice(ClimateEntity, RestoreEntity):
@@ -105,14 +108,13 @@ class MideaClimateACDevice(ClimateEntity, RestoreEntity):
         """Initialize the climate device."""
         from msmart.device import air_conditioning as ac
 
-        self._operation_list = ac.operational_mode_enum.list()
-        self._fan_list = ac.fan_speed_enum.list()
-        self._swing_list = ac.swing_mode_enum.list()
+        self._operation_list = device.supported_operation_modes
         if include_off_as_state:
             self._operation_list.append("off")
+
+        self._fan_list = ac.fan_speed_enum.list()
+        self._swing_list = device.supported_swing_modes
         self._support_flags = SUPPORT_FLAGS
-        # the LED display on the AC should use the same unit as that in homeassistant
-        device.fahrenheit_unit = (hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
         self._device = device
         self._unit_of_measurement = TEMP_CELSIUS
         self._target_temperature_step = temp_step
