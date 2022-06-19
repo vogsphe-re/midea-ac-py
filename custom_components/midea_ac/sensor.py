@@ -13,7 +13,7 @@ from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
 import logging
 
-from . import DOMAIN
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -61,7 +61,8 @@ class MideaTemperatureSensor(RestoreSensor):
 
     async def async_update(self):
         # Grab the property from the device
-        self._native_value = getattr(self._device, self._prop)
+        if self.available:
+            self._native_value = getattr(self._device, self._prop)
 
     @property
     def name(self) -> str:
