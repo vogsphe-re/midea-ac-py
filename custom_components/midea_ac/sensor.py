@@ -6,10 +6,10 @@ from homeassistant.components.sensor import (
     SensorStateClass,
     RestoreSensor,
 )
-from homeassistant.const import TEMP_CELSIUS
+from homeassistant.const import TEMP_CELSIUS, CONF_ID
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.config_entries import ConfigEntry
 
 import logging
 
@@ -17,30 +17,29 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-
-async def async_setup_platform(
+async def async_setup_entry(
     hass: HomeAssistant,
-    config: ConfigType,
+    config_entry: ConfigEntry,
     add_entities: AddEntitiesCallback,
-    discovery_info: DiscoveryInfoType | None = None
-) -> None:
+):
     """Setup the sensor platform for Midea Smart AC."""
 
-    # Only setup via discovery
-    if discovery_info is None:
-        return
-
     _LOGGER.info("Setting up sensor platform.")
+    
+    # Get config data from entry
+    config = config_entry.data
 
-    device = hass.data[DOMAIN]["device"]
+    # Fetch device from global data
+    id = config.get(CONF_ID)
+    device = hass.data[DOMAIN][id]
 
+    # Create sensor entities from device
     add_entities([
         MideaTemperatureSensor(
             device, "Indoor Temperature", "indoor_temperature"),
         MideaTemperatureSensor(
             device, "Outdoor Temperature", "outdoor_temperature"),
     ])
-
 
 class MideaTemperatureSensor(RestoreSensor):
     """Temperature sensor for Midea AC."""
@@ -49,6 +48,7 @@ class MideaTemperatureSensor(RestoreSensor):
         self._device = device
         self._name = friendly_name
         self._prop = prop
+        self._native_value = None
 
     async def async_added_to_hass(self) -> None:
         await super().async_added_to_hass()
@@ -65,7 +65,16 @@ class MideaTemperatureSensor(RestoreSensor):
             self._native_value = getattr(self._device, self._prop)
 
     @property
+    def device_info(self):
+        return {
+            "identifiers": {
+                (DOMAIN, self._device.id)
+            },
+        }
+
+    @property
     def name(self) -> str:
+        # TODO better names
         return f"{self._name}"
 
     @property

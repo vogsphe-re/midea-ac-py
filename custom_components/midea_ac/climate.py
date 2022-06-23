@@ -8,7 +8,7 @@ This is still early work in progress
 """
 from __future__ import annotations
 
-from homeassistant.const import TEMP_CELSIUS, TEMP_CELSIUS, TEMP_FAHRENHEIT, ATTR_TEMPERATURE
+from homeassistant.const import TEMP_CELSIUS, TEMP_CELSIUS, TEMP_FAHRENHEIT, ATTR_TEMPERATURE, CONF_ID
 from homeassistant.core import HomeAssistant
 try:
     from homeassistant.components.climate import ClimateEntity
@@ -19,7 +19,7 @@ from homeassistant.components.climate.const import (
     SUPPORT_PRESET_MODE, PRESET_NONE, PRESET_ECO, PRESET_BOOST)
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.config_entries import ConfigEntry
 
 import logging
 from msmart.device import air_conditioning as ac
@@ -28,7 +28,6 @@ import datetime
 # Local consts
 from .const import (
     DOMAIN,
-    CONF_K1,
     CONF_PROMPT_TONE,
     CONF_TEMP_STEP,
     CONF_INCLUDE_OFF_AS_STATE,
@@ -42,36 +41,37 @@ _LOGGER = logging.getLogger(__name__)
 SCAN_INTERVAL = datetime.timedelta(seconds=15)
 
 
-async def async_setup_platform(
+async def async_setup_entry(
     hass: HomeAssistant,
-    config: ConfigType,
+    config_entry: ConfigEntry,
     add_entities: AddEntitiesCallback,
-    discovery_info: DiscoveryInfoType | None = None
-) -> None:
+):
     """Setup the climate platform for Midea Smart AC."""
-
-    # Only setup via discovery
-    if discovery_info is None:
-        return
 
     _LOGGER.info("Setting up climate platform.")
 
-    prompt_tone = config.get(CONF_PROMPT_TONE)
+    # Get config data from entry
+    config = config_entry.data
+
+    # Fetch device from global data
+    id = config.get(CONF_ID)
+    device = hass.data[DOMAIN][id]
+
+    # Perform some device configuration
+    device.prompt_tone = config.get(CONF_PROMPT_TONE)
+    # Display on the AC should use the same unit as homeassistant
+    device.fahrenheit = (hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
+    device.keep_last_known_online_state = config.get(
+        CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
+
+    # Query device capabilities
+    _LOGGER.info("Querying device capabilities.")
+    await hass.async_add_executor_job(device.get_capabilities)
+
+    # Get config data from entry
     temp_step = config.get(CONF_TEMP_STEP)
     include_off_as_state = config.get(CONF_INCLUDE_OFF_AS_STATE)
     use_fan_only_workaround = config.get(CONF_USE_FAN_ONLY_WORKAROUND)
-    keep_last_known_online_state = config.get(
-        CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
-
-    device = hass.data[DOMAIN]["device"]
-
-    device.prompt_tone = prompt_tone
-    # Display on the AC should use the same unit as homeassistant
-    device.fahrenheit = (hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
-    device.keep_last_known_online_state = keep_last_known_online_state
-
-    _LOGGER.info("Querying device capabilities.")
-    await hass.async_add_executor_job(device.get_capabilities)
 
     add_entities([
         MideaClimateACDevice(hass, device, temp_step,
@@ -123,6 +123,14 @@ class MideaClimateACDevice(ClimateEntity, RestoreEntity):
         """Run when entity about to be added."""
         await super().async_added_to_hass()
         self._old_state = await self.async_get_last_state()
+    
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {
+                (DOMAIN, self._device.id)
+            },
+        }
 
     @property
     def available(self):
