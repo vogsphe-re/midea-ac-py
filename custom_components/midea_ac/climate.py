@@ -130,6 +130,8 @@ class MideaClimateACDevice(ClimateEntity, RestoreEntity):
             "identifiers": {
                 (DOMAIN, self._device.id)
             },
+            "name": self.name,
+            "manufacturer": "Midea",
         }
 
     @property
