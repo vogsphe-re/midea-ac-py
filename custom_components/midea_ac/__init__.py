@@ -3,12 +3,10 @@ from __future__ import annotations
 
 from homeassistant.core import HomeAssistant
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
-from homeassistant.helpers import device_registry as dr
 from homeassistant.config_entries import ConfigEntry
 
 import logging
 from msmart.device import air_conditioning as ac
-import voluptuous as vol
 
 # Local consts
 from .const import (
@@ -21,7 +19,7 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     """Set up a Midea AC device entry."""
-    
+
     # Ensure the global data dict exists
     hass.data.setdefault(DOMAIN, {})
 
@@ -53,5 +51,20 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
         hass.config_entries.async_forward_entry_setup(config_entry, "climate"))
     hass.async_create_task(
         hass.config_entries.async_forward_entry_setup(config_entry, "sensor"))
+
+    return True
+
+
+async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry):
+
+    # Get config data from entry
+    config = config_entry.data
+
+    # Remove device from global data
+    id = config.get(CONF_ID)
+    hass.data[DOMAIN].pop(id)
+
+    await hass.config_entries.async_forward_entry_unload(config_entry, "climate")
+    await hass.config_entries.async_forward_entry_unload(config_entry, "sensor")
 
     return True
