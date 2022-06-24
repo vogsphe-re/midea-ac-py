@@ -39,7 +39,7 @@ class MideaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self.hass.data.setdefault(DOMAIN, {})
                 self.hass.data[DOMAIN][id] = device
                 # Create a setup entry with all the config data
-                return self.async_create_entry(title=device.name, data=config)
+                return self.async_create_entry(title=f"{DOMAIN} {id}", data=config)
             else:
                 errors["base"] = "connection"
 
