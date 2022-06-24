@@ -73,7 +73,7 @@ class MideaTemperatureSensor(RestoreSensor):
 
     @property
     def name(self) -> str:
-        return f"{DOMAIN}_{self._prop}"
+        return f"{DOMAIN}_{self._prop}_{self._device.id}"
 
     @property
     def unique_id(self) -> str:
