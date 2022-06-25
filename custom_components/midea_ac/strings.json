@@ -28,7 +28,25 @@
       "already_configured": "The device ID has already been configured."
     },
     "error":{
-      "connection":"A connection could not be made with these settings."
+      "cannot_connect":"A connection could not be made with these settings."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options for Midea Smart AC Device",
+        "data": {
+          "prompt_tone": "Prompt Tone",
+          "temp_step": "Temperature Step",
+          "include_off_as_state": "Include \"Off\" State",
+          "use_fan_only_workaround": "Use Fan-only Workaround",
+          "keep_last_known_online_state": "Keep Last Known State"
+        },
+        "data_description": {
+          "prompt_tone": "Enable the beep when sending commands",
+          "temp_step": "Step size for temperature set point"
+        }
+      }
     }
   }
 }

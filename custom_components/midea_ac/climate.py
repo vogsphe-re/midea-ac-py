@@ -8,8 +8,11 @@ This is still early work in progress
 """
 from __future__ import annotations
 
+import datetime
+import logging
+
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import TEMP_CELSIUS, TEMP_CELSIUS, TEMP_FAHRENHEIT, ATTR_TEMPERATURE, CONF_ID
-from homeassistant.core import HomeAssistant
 try:
     from homeassistant.components.climate import ClimateEntity
 except ImportError:
@@ -17,15 +20,12 @@ except ImportError:
 from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE, SUPPORT_FAN_MODE, SUPPORT_SWING_MODE,
     SUPPORT_PRESET_MODE, PRESET_NONE, PRESET_ECO, PRESET_BOOST)
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
-from homeassistant.config_entries import ConfigEntry
-
-import logging
 from msmart.device import air_conditioning as ac
-import datetime
 
-# Local consts
+# Local constants
 from .const import (
     DOMAIN,
     CONF_PROMPT_TONE,
@@ -50,54 +50,53 @@ async def async_setup_entry(
 
     _LOGGER.info("Setting up climate platform.")
 
-    # Get config data from entry
+    # Get config and options data from entry
     config = config_entry.data
+    options = config_entry.options
 
     # Fetch device from global data
     id = config.get(CONF_ID)
     device = hass.data[DOMAIN][id]
 
-    # Perform some device configuration
-    device.prompt_tone = config.get(CONF_PROMPT_TONE)
-    # Display on the AC should use the same unit as homeassistant
-    device.fahrenheit = (hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
-    device.keep_last_known_online_state = config.get(
-        CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
-
     # Query device capabilities
     _LOGGER.info("Querying device capabilities.")
     await hass.async_add_executor_job(device.get_capabilities)
 
-    # Get config data from entry
-    temp_step = config.get(CONF_TEMP_STEP)
-    include_off_as_state = config.get(CONF_INCLUDE_OFF_AS_STATE)
-    use_fan_only_workaround = config.get(CONF_USE_FAN_ONLY_WORKAROUND)
-
     add_entities([
-        MideaClimateACDevice(hass, device, temp_step,
-                             include_off_as_state, use_fan_only_workaround)
+        MideaClimateACDevice(hass, device, options)
     ])
 
 
 class MideaClimateACDevice(ClimateEntity, RestoreEntity):
     """Representation of a Midea climate AC device."""
 
-    def __init__(self, hass, device, temp_step: float,
-                 include_off_as_state: bool, use_fan_only_workaround: bool):
+    def __init__(self, hass, device, options: dict):
         """Initialize the climate device."""
 
+        self.hass = hass
+        self._device = device
+
+        # Apply options
+        self._device.prompt_tone = options.get(CONF_PROMPT_TONE)
+        self._device.keep_last_known_online_state = options.get(
+            CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
+
+        # Display on the AC should use the same unit as homeassistant
+        self._device.fahrenheit = (
+            hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
+
+        self._target_temperature_step = options.get(CONF_TEMP_STEP)
+        self._include_off_as_state = options.get(CONF_INCLUDE_OFF_AS_STATE)
+        self._use_fan_only_workaround = options.get(
+            CONF_USE_FAN_ONLY_WORKAROUND)
+
         self._operation_list = device.supported_operation_modes
-        if include_off_as_state:
+        if self._include_off_as_state:
             self._operation_list.append("off")
 
         self._fan_list = ac.fan_speed_enum.list()
         self._swing_list = device.supported_swing_modes
-        self._device = device
-        self._target_temperature_step = temp_step
-        self._include_off_as_state = include_off_as_state
-        self._use_fan_only_workaround = use_fan_only_workaround
 
-        self.hass = hass
         self._old_state = None
         self._changed = False
 
@@ -123,7 +122,7 @@ class MideaClimateACDevice(ClimateEntity, RestoreEntity):
         """Run when entity about to be added."""
         await super().async_added_to_hass()
         self._old_state = await self.async_get_last_state()
-    
+
     @property
     def device_info(self):
         return {

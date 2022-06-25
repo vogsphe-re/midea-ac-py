@@ -1,18 +1,15 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorStateClass,
-    RestoreSensor,
-)
-from homeassistant.const import TEMP_CELSIUS, CONF_ID
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.config_entries import ConfigEntry
-
 import logging
 
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import TEMP_CELSIUS, CONF_ID
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass, RestoreSensor
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+# Local constants
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)

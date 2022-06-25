@@ -1,24 +1,20 @@
 """Integration for Midea Smart AC."""
 from __future__ import annotations
 
-from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.config_entries import ConfigEntry
-
-import logging
+from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
+from homeassistant.core import HomeAssistant
 from msmart.device import air_conditioning as ac
 
-# Local consts
+# Local constants
 from .const import (
     DOMAIN,
     CONF_K1
 )
 
-_LOGGER = logging.getLogger(__name__)
 
-
-async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
-    """Set up a Midea AC device entry."""
+async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
+    """Set up a Midea AC device from a config entry."""
 
     # Ensure the global data dict exists
     hass.data.setdefault(DOMAIN, {})
@@ -52,10 +48,14 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     hass.async_create_task(
         hass.config_entries.async_forward_entry_setup(config_entry, "sensor"))
 
+    # Reload entry when its updated
+    config_entry.async_on_unload(
+        config_entry.add_update_listener(async_reload_entry))
+
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry):
+async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
 
     # Get config data from entry
     config = config_entry.data
@@ -68,3 +68,7 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     await hass.config_entries.async_forward_entry_unload(config_entry, "sensor")
 
     return True
+
+
+async def async_reload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> None:
+    await hass.config_entries.async_reload(config_entry.entry_id)
