@@ -61,17 +61,30 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                 # Indicate a connection could not be made
                 errors["base"] = "cannot_connect"
 
+        
+        user_input = user_input or {}
+        
         data_schema = vol.Schema({
-            vol.Required(CONF_ID): cv.string,
-            vol.Required(CONF_HOST): cv.string,
-            vol.Optional(CONF_PORT, default=6444): cv.port,
-            vol.Optional(CONF_TOKEN, default=""): cv.string,
-            vol.Optional(CONF_K1, default=""): cv.string,
-            vol.Optional(CONF_PROMPT_TONE, default=True): cv.boolean,
-            vol.Optional(CONF_TEMP_STEP, default=1.0): vol.All(vol.Coerce(float), vol.Range(min=0.5, max=5)),
-            vol.Optional(CONF_INCLUDE_OFF_AS_STATE, default=True): cv.boolean,
-            vol.Optional(CONF_USE_FAN_ONLY_WORKAROUND, default=False):  cv.boolean,
-            vol.Optional(CONF_KEEP_LAST_KNOWN_ONLINE_STATE, default=False):  cv.boolean
+            vol.Required(CONF_ID,
+                         default=user_input.get(CONF_ID)): cv.string,
+            vol.Required(CONF_HOST,
+                         default=user_input.get(CONF_HOST)): cv.string,
+            vol.Optional(CONF_PORT,
+                         default=user_input.get(CONF_PORT, 6444)): cv.port,
+            vol.Optional(CONF_TOKEN,
+                         default=user_input.get(CONF_TOKEN, "")): cv.string,
+            vol.Optional(CONF_K1,
+                         default=user_input.get(CONF_K1, "")): cv.string,
+            vol.Optional(CONF_PROMPT_TONE,
+                         default=user_input.get(CONF_PROMPT_TONE, True)): cv.boolean,
+            vol.Optional(CONF_TEMP_STEP,
+                         default=user_input.get(CONF_TEMP_STEP, 1.0)): vol.All(vol.Coerce(float), vol.Range(min=0.5, max=5)),
+            vol.Optional(CONF_INCLUDE_OFF_AS_STATE,
+                         default=user_input.get(CONF_INCLUDE_OFF_AS_STATE, True)): cv.boolean,
+            vol.Optional(CONF_USE_FAN_ONLY_WORKAROUND,
+                         default=user_input.get(CONF_USE_FAN_ONLY_WORKAROUND, False)):  cv.boolean,
+            vol.Optional(CONF_KEEP_LAST_KNOWN_ONLINE_STATE,
+                         default=user_input.get(CONF_KEEP_LAST_KNOWN_ONLINE_STATE, False)):  cv.boolean
         })
 
         return self.async_show_form(step_id="user", data_schema=data_schema, errors=errors)
