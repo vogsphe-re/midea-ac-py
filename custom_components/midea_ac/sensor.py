@@ -19,7 +19,7 @@ async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: ConfigEntry,
     add_entities: AddEntitiesCallback,
-):
+) -> None:
     """Setup the sensor platform for Midea Smart AC."""
 
     _LOGGER.info("Setting up sensor platform.")
@@ -55,13 +55,13 @@ class MideaTemperatureSensor(RestoreSensor):
         # Restore previous native value
         self._native_value = last_sensor_data.native_value
 
-    async def async_update(self):
+    async def async_update(self) -> None:
         # Grab the property from the device
         if self.available:
             self._native_value = getattr(self._device, self._prop)
 
     @property
-    def device_info(self):
+    def device_info(self) -> dict:
         return {
             "identifiers": {
                 (DOMAIN, self._device.id)
@@ -81,17 +81,17 @@ class MideaTemperatureSensor(RestoreSensor):
         return self._device.online
 
     @property
-    def device_class(self):
+    def device_class(self) -> str:
         return SensorDeviceClass.TEMPERATURE
 
     @property
-    def state_class(self):
+    def state_class(self) -> str:
         return SensorStateClass.MEASUREMENT
 
     @property
-    def native_unit_of_measurement(self):
+    def native_unit_of_measurement(self) -> str:
         return TEMP_CELSIUS
 
     @property
-    def native_value(self):
+    def native_value(self) -> float:
         return self._native_value

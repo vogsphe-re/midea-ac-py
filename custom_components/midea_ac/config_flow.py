@@ -23,7 +23,7 @@ from .const import (
 
 class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
 
-    async def async_step_user(self, user_input):
+    async def async_step_user(self, user_input) -> FlowResult:
         errors = {}
         if user_input is not None:
             # Set the unique ID and abort if duplicate exists
@@ -76,7 +76,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(step_id="user", data_schema=data_schema, errors=errors)
 
-    async def _test_connection(self, config):
+    async def _test_connection(self, config) -> ac | None:
         # Construct the device
         id = config.get(CONF_ID)
         host = config.get(CONF_HOST)
@@ -101,6 +101,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class MideaOptionsFlow(OptionsFlow):
+
     def __init__(self, config_entry: ConfigEntry) -> None:
         self.config_entry = config_entry
 
