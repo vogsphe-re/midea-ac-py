@@ -1,20 +1,11 @@
-Home Assistant Custom Integration for Midea Group(Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and much more) Air Conditioners via LAN.
+# Midea Smart AC
+Home Assistant Custom Integration for Midea Group (Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Rotenso, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and much more) Air Conditioners via LAN.
 
-Tested with Home Assistant 2021.7.2.
+Tested with Home Assistant versions:
+  * 2021.7.2
+  * 2022.6.5
 
-## Attention!!!
-Version >= 0.1.27, the device naming rules have changed.
-
-**Example configuration.yaml:**
-
-```yaml
-climate:
-  platform: midea_ac
-  host: midea_device_ip_address
-  id: midea_device_applianceId
-```
-
-## For more information, please visit [midea-ac-py](https://github.com/mac-zhou/midea-ac-py)
+## For more information, please visit [midea-ac-py](https://github.com/mac-zhou/midea-ac-py).
 
 ## Buy me a cup of coffee
 
