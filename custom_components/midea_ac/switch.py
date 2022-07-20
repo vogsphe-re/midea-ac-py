@@ -32,10 +32,14 @@ async def async_setup_entry(
     id = config.get(CONF_ID)
     device = hass.data[DOMAIN][id]
 
-    # Create sensor entities from device
-    add_entities([
-        MideaDisplaySwitch(device),
-    ])
+    # Query device capabilities
+    if callable(getattr(device, "toggle_display", None)):
+        # Create sensor entities from device
+        add_entities([
+            MideaDisplaySwitch(device),
+        ])
+    else:
+        _LOGGER.warn("Device does not support 'toggle_display' method.")
 
 
 class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
