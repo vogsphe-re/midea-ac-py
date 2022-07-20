@@ -104,6 +104,12 @@ class MideaClimateACDevice(ClimateEntity):
         self._swing_list = getattr(
             self._device, "supported_swing_modes", ac.swing_mode_enum.list())
 
+        # Attempt to load min/max target temperatures
+        self._min_temperature = getattr(
+            self._device, "min_target_temperature", 16)
+        self._max_temperature = getattr(
+            self._device, "max_target_temperature", 30)
+
         self._changed = False
 
     async def apply_changes(self) -> None:
@@ -306,9 +312,9 @@ class MideaClimateACDevice(ClimateEntity):
     @property
     def min_temp(self) -> float:
         """Return the minimum temperature."""
-        return 17
+        return self._min_temperature
 
     @property
     def max_temp(self) -> float:
         """Return the maximum temperature."""
-        return 30
+        return self._max_temperature
