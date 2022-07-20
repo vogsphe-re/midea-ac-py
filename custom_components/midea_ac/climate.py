@@ -58,8 +58,11 @@ async def async_setup_entry(
     device = hass.data[DOMAIN][id]
 
     # Query device capabilities
-    _LOGGER.info("Querying device capabilities.")
-    await hass.async_add_executor_job(device.get_capabilities)
+    if callable(getattr(device, "get_capabilities", None)):
+        _LOGGER.info("Querying device capabilities.")
+        await hass.async_add_executor_job(device.get_capabilities)
+    else:
+        _LOGGER.warn("Device does not support 'get_capabilities' method.")
 
     add_entities([
         MideaClimateACDevice(hass, device, options)
@@ -89,12 +92,17 @@ class MideaClimateACDevice(ClimateEntity):
         self._use_fan_only_workaround = options.get(
             CONF_USE_FAN_ONLY_WORKAROUND)
 
-        self._operation_list = device.supported_operation_modes
+        # Attempt to load supported operation modes
+        self._operation_list = getattr(
+            self._device, "supported_operation_modes", ac.operational_mode_enum.list())
         if self._include_off_as_state:
             self._operation_list.append("off")
 
         self._fan_list = ac.fan_speed_enum.list()
-        self._swing_list = device.supported_swing_modes
+
+        # Attempt to load supported swing modes
+        self._swing_list = getattr(
+            self._device, "supported_swing_modes", ac.swing_mode_enum.list())
 
         self._changed = False
 
