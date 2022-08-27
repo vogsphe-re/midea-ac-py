@@ -1,7 +1,5 @@
 
 {
-  "name": "Midea Smart Aircon",
-  "domains": ["climate"],
-  "render_readme": false,
+  "name": "Midea Smart AC",
   "homeassistant": "0.110.2"
 }
