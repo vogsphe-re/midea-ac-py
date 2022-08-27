@@ -4,6 +4,7 @@ Home Assistant Custom Integration for Midea Group (Hualing, Senville, Klimaire, 
 Tested with Home Assistant versions:
   * 2021.7.2
   * 2022.6.5
+  * 2022.8.7
 
 ## For more information, please visit [midea-ac-py](https://github.com/mac-zhou/midea-ac-py).
 

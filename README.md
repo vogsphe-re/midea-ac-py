@@ -4,6 +4,7 @@ Home Assistant Custom Integration for Midea Group (Hualing, Senville, Klimaire, 
 Tested with Home Assistant versions:
   * 2021.7.2
   * 2022.6.5
+  * 2022.8.7
 
 ## Attention!!!
 Version >= 0.2.4, The integration no longer supports YAML configuration. Devices must be configured via the GUI.
