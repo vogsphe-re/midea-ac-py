@@ -13,6 +13,7 @@ from homeassistant.helpers.restore_state import RestoreEntity
 
 # Local constants
 from .const import DOMAIN
+from . import helpers
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,14 +34,9 @@ async def async_setup_entry(
     id = config.get(CONF_ID)
     device = hass.data[DOMAIN][id]
 
-    # Query library support
-    if getattr(device, "filter_alert", None) is None:
-        _LOGGER.warn("Device does not support 'filter_alert' property.")
-    else:
-        # Create sensor entities from device
-        add_entities([
-            MideaBinarySensor(device, "filter_alert"),
-        ])
+    # Create sensor entities from device if supported
+    if helpers.property_exists(device, "filter_alert"):
+        add_entities([MideaBinarySensor(device, "filter_alert"), ])
 
 
 class MideaBinarySensor(BinarySensorEntity, RestoreEntity):

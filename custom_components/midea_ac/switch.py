@@ -12,6 +12,7 @@ from homeassistant.helpers.restore_state import RestoreEntity
 
 # Local constants
 from .const import DOMAIN
+from . import helpers
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -32,14 +33,9 @@ async def async_setup_entry(
     id = config.get(CONF_ID)
     device = hass.data[DOMAIN][id]
 
-    # Query device capabilities
-    if callable(getattr(device, "toggle_display", None)):
-        # Create sensor entities from device
-        add_entities([
-            MideaDisplaySwitch(device),
-        ])
-    else:
-        _LOGGER.warn("Device does not support 'toggle_display' method.")
+    # Add supported switch entities
+    if helpers.method_exists(device, "toggle_display"):
+        add_entities([MideaDisplaySwitch(device), ])
 
 
 class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
