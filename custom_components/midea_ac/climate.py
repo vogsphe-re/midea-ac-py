@@ -33,7 +33,6 @@ from .const import (
     CONF_USE_FAN_ONLY_WORKAROUND,
     CONF_KEEP_LAST_KNOWN_ONLINE_STATE
 )
-from . import helpers
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -57,11 +56,6 @@ async def async_setup_entry(
     # Fetch device from global data
     id = config.get(CONF_ID)
     device = hass.data[DOMAIN][id]
-
-    # Query device capabilities
-    if helpers.method_exists(device, "get_capabilities"):
-        _LOGGER.info("Querying device capabilities.")
-        await hass.async_add_executor_job(device.get_capabilities)
 
     add_entities([
         MideaClimateACDevice(hass, device, options)

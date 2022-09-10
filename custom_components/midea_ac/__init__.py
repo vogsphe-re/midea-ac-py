@@ -1,6 +1,8 @@
 """Integration for Midea Smart AC."""
 from __future__ import annotations
 
+import logging
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
@@ -11,6 +13,9 @@ from .const import (
     DOMAIN,
     CONF_K1
 )
+from . import helpers
+
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
@@ -41,6 +46,11 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
             await hass.async_add_executor_job(device.authenticate, k1, token)
 
         hass.data[DOMAIN][id] = device
+
+    # Query device capabilities
+    if helpers.method_exists(device, "get_capabilities"):
+        _LOGGER.info("Querying device capabilities.")
+        await hass.async_add_executor_job(device.get_capabilities)
 
     # Create platform entries
     hass.async_create_task(
