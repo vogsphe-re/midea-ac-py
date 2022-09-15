@@ -19,7 +19,7 @@ except ImportError:
     from homeassistant.components.climate import ClimateDevice as ClimateEntity
 from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE, SUPPORT_FAN_MODE, SUPPORT_SWING_MODE,
-    SUPPORT_PRESET_MODE, PRESET_NONE, PRESET_ECO, PRESET_BOOST)
+    SUPPORT_PRESET_MODE, PRESET_NONE, PRESET_ECO, PRESET_BOOST, PRESET_AWAY)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from msmart.device import air_conditioning as ac
@@ -264,22 +264,32 @@ class MideaClimateACDevice(ClimateEntity):
         await self.apply_changes()
 
     async def async_set_preset_mode(self, preset_mode: str) -> None:
-        if preset_mode == PRESET_NONE:
-            self._device.eco_mode = False
-            self._device.turbo_mode = False
-        elif preset_mode == PRESET_BOOST:
-            self._device.eco_mode = False
+        # TODO Assuming these are all mutually exclusive
+        self._device.eco_mode = False
+        self._device.turbo_mode = False
+        self._device.freeze_protection_mode = False
+
+        # Enable proper mode
+        if preset_mode == PRESET_BOOST:
             self._device.turbo_mode = True
         elif preset_mode == PRESET_ECO:
-            self._device.turbo_mode = False
             self._device.eco_mode = True
+        elif preset_mode == PRESET_AWAY:
+            self._device.freeze_protection_mode = True
 
         self._changed = True
         await self.apply_changes()
 
     @property
     def preset_modes(self) -> list:
-        return [PRESET_NONE, PRESET_ECO, PRESET_BOOST]
+        # TODO could check for supports_eco and supports_turbo
+        modes = [PRESET_NONE, PRESET_ECO, PRESET_BOOST]
+
+        # Add away preset if in heat and supports freeze protection
+        if getattr(self._device, "supports_freeze_protection_mode", False) and self._device.operational_mode == ac.operational_mode_enum.heat:
+            modes.append(PRESET_AWAY)
+
+        return modes
 
     @property
     def preset_mode(self) -> str:
@@ -287,6 +297,8 @@ class MideaClimateACDevice(ClimateEntity):
             return PRESET_ECO
         elif self._device.turbo_mode:
             return PRESET_BOOST
+        elif getattr(self._device, "freeze_protection_mode", False):
+            return PRESET_AWAY
         else:
             return PRESET_NONE
 
