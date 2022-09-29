@@ -34,6 +34,7 @@ from .const import (
     CONF_KEEP_LAST_KNOWN_ONLINE_STATE,
     CONF_ADDITIONAL_OPERATION_MODES
 )
+from . import helpers
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -77,10 +78,6 @@ class MideaClimateACDevice(ClimateEntity):
         self._device.keep_last_known_online_state = options.get(
             CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
 
-        # Display on the AC should use the same unit as homeassistant
-        self._device.fahrenheit = (
-            hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
-
         self._target_temperature_step = options.get(CONF_TEMP_STEP)
         self._include_off_as_state = options.get(CONF_INCLUDE_OFF_AS_STATE)
         self._use_fan_only_workaround = options.get(
@@ -116,6 +113,11 @@ class MideaClimateACDevice(ClimateEntity):
     async def apply_changes(self) -> None:
         if not self._changed:
             return
+
+        # Display on the AC should use the same unit as homeassistant
+        helpers.set_properties(self._device, ["fahrenheit", "fahrenheit_unit"],
+                               self.hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
+
         await self.hass.async_add_executor_job(self._device.apply)
         await self.async_update_ha_state()
         self._changed = False
