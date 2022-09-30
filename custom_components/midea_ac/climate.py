@@ -31,7 +31,8 @@ from .const import (
     CONF_TEMP_STEP,
     CONF_INCLUDE_OFF_AS_STATE,
     CONF_USE_FAN_ONLY_WORKAROUND,
-    CONF_KEEP_LAST_KNOWN_ONLINE_STATE
+    CONF_KEEP_LAST_KNOWN_ONLINE_STATE,
+    CONF_ADDITIONAL_OPERATION_MODES
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -92,6 +93,13 @@ class MideaClimateACDevice(ClimateEntity):
         self._operation_list = device.supported_operation_modes
         if self._include_off_as_state:
             self._operation_list.append("off")
+
+        # Append additional operation modes as needed
+        additional_modes = options.get(CONF_ADDITIONAL_OPERATION_MODES) or ""
+        for mode in filter(None, additional_modes.split(" ")):
+            if mode not in self._operation_list:
+                _LOGGER.info(f"Adding additional mode '{mode}'.")
+                self._operation_list.append(mode)
 
         self._fan_list = ac.fan_speed_enum.list()
         self._swing_list = device.supported_swing_modes
