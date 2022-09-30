@@ -70,7 +70,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                          default=user_input.get(CONF_ID)): cv.string,
             vol.Required(CONF_HOST,
                          default=user_input.get(CONF_HOST)): cv.string,
-            vol.Optional(CONF_PORT,
+            vol.Required(CONF_PORT,
                          default=user_input.get(CONF_PORT, 6444)): cv.port,
             vol.Optional(CONF_TOKEN,
                          default=user_input.get(CONF_TOKEN, "")): cv.string,
