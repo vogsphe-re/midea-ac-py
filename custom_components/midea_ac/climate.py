@@ -303,7 +303,7 @@ class MideaClimateACDevice(ClimateEntity):
             modes.append(PRESET_AWAY)
 
         # Add sleep preset in heat, cool or auto
-        if self._device.operational_mode in [ ac.operational_mode_enum.heat,  ac.operational_mode_enum.cool,  ac.operational_mode_enum.auto]:
+        if self._device.operational_mode in [ac.operational_mode_enum.heat,  ac.operational_mode_enum.cool,  ac.operational_mode_enum.auto]:
             modes.append(PRESET_SLEEP)
 
         return modes
