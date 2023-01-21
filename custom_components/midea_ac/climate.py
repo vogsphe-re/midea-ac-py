@@ -296,11 +296,15 @@ class MideaClimateACDevice(ClimateEntity):
     @property
     def preset_modes(self) -> list:
         # TODO could check for supports_eco and supports_turbo
-        modes = [PRESET_NONE, PRESET_ECO, PRESET_BOOST]
+        modes = [PRESET_NONE, PRESET_BOOST]
 
         # Add away preset if in heat and supports freeze protection
         if getattr(self._device, "supports_freeze_protection_mode", False) and self._device.operational_mode == ac.operational_mode_enum.heat:
             modes.append(PRESET_AWAY)
+
+        # Add eco preset in cool, dry and auto
+        if self._device.operational_mode in [ac.operational_mode_enum.dry,  ac.operational_mode_enum.cool,  ac.operational_mode_enum.auto]:
+            modes.append(PRESET_ECO)
 
         # Add sleep preset in heat, cool or auto
         if self._device.operational_mode in [ac.operational_mode_enum.heat,  ac.operational_mode_enum.cool,  ac.operational_mode_enum.auto]:
