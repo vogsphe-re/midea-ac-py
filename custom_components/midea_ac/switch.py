@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_ID, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
+from homeassistant.const import CONF_ID, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN, EntityCategory
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -72,6 +72,10 @@ class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
                 (DOMAIN, self._device.id)
             },
         }
+
+    @property
+    def entity_category(self):
+        return EntityCategory.CONFIG
 
     @property
     def name(self) -> str:
