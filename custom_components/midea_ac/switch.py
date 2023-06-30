@@ -34,11 +34,13 @@ async def async_setup_entry(
     device = hass.data[DOMAIN][id]
 
     # Add switch for beep/tone
-    add_entities([MideaSwitch(device, "prompt_tone", entity_category = EntityCategory.CONFIG)])
+    add_entities([MideaSwitch(device, "prompt_tone",
+                 entity_category=EntityCategory.CONFIG)])
 
     # Add supported switch entities
     if helpers.method_exists(device, "toggle_display"):
         add_entities([MideaDisplaySwitch(device), ])
+
 
 class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
     """Display switch for Midea AC."""
