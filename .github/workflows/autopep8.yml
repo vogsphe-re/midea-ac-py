@@ -2,6 +2,7 @@ name: Check autopep8
 
 on:
   push:
+    branches: [ "future" ]
   pull_request:
     branches: [ "future" ]
 
