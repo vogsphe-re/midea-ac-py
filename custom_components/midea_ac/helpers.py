@@ -22,12 +22,14 @@ def property_exists(device, prop):
 
     return True
 
+
 def set_properties(device, props, value):
     success = False
     for prop in props:
         if hasattr(device, prop):
             setattr(device, prop, value)
             success = True
-    
+
     if not success:
-        _LOGGER.warn(f"Device does not support any of the properties: '{', '.join(props)}'.")
+        _LOGGER.warn(
+            f"Device does not support any of the properties: '{', '.join(props)}'.")

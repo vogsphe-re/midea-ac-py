@@ -120,7 +120,7 @@ for packet in cap:
             'outdoor_temperature': response.outdoor_temperature,
         }))
     else:
-         print("Decoded Data:\t Can't Decoded")
+        print("Decoded Data:\t Can't Decoded")
 
     if args.tcp_raw:
         print("TCP RAW:\t %s" % tcp_data)
