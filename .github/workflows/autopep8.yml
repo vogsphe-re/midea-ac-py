@@ -1,6 +1,9 @@
 name: Check autopep8
 
-on: [push]
+on:
+  push:
+  pull_request:
+    branches: [ "future" ]
 
 jobs:
   check-autopep8:
