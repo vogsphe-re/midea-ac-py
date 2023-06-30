@@ -27,7 +27,6 @@ from msmart.device import air_conditioning as ac
 # Local constants
 from .const import (
     DOMAIN,
-    CONF_PROMPT_TONE,
     CONF_TEMP_STEP,
     CONF_INCLUDE_OFF_AS_STATE,
     CONF_USE_FAN_ONLY_WORKAROUND,
@@ -74,7 +73,6 @@ class MideaClimateACDevice(ClimateEntity):
         self._device = device
 
         # Apply options
-        self._device.prompt_tone = options.get(CONF_PROMPT_TONE)
         self._device.keep_last_known_online_state = options.get(
             CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
 

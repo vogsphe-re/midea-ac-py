@@ -13,7 +13,6 @@ import voluptuous as vol
 from .const import (
     DOMAIN,
     CONF_K1,
-    CONF_PROMPT_TONE,
     CONF_TEMP_STEP,
     CONF_INCLUDE_OFF_AS_STATE,
     CONF_USE_FAN_ONLY_WORKAROUND,
@@ -49,7 +48,6 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                     CONF_K1: user_input.get(CONF_K1),
                 }
                 options = {
-                    CONF_PROMPT_TONE: user_input.get(CONF_PROMPT_TONE),
                     CONF_TEMP_STEP: user_input.get(CONF_TEMP_STEP),
                     CONF_INCLUDE_OFF_AS_STATE: user_input.get(CONF_INCLUDE_OFF_AS_STATE),
                     CONF_USE_FAN_ONLY_WORKAROUND: user_input.get(CONF_USE_FAN_ONLY_WORKAROUND),
@@ -76,8 +74,6 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                          description={"suggested_value": user_input.get(CONF_TOKEN, "")}): cv.string,
             vol.Optional(CONF_K1,
                          description={"suggested_value": user_input.get(CONF_K1, "")}): cv.string,
-            vol.Optional(CONF_PROMPT_TONE,
-                         default=user_input.get(CONF_PROMPT_TONE, True)): cv.boolean,
             vol.Optional(CONF_TEMP_STEP,
                          default=user_input.get(CONF_TEMP_STEP, 1.0)): vol.All(vol.Coerce(float), vol.Range(min=0.5, max=5)),
             vol.Optional(CONF_INCLUDE_OFF_AS_STATE,
@@ -129,8 +125,6 @@ class MideaOptionsFlow(OptionsFlow):
         options = self.config_entry.options
 
         data_schema = vol.Schema({
-            vol.Optional(CONF_PROMPT_TONE,
-                         default=options.get(CONF_PROMPT_TONE, True)): cv.boolean,
             vol.Optional(CONF_TEMP_STEP,
                          default=options.get(CONF_TEMP_STEP, 1.0)): vol.All(vol.Coerce(float), vol.Range(min=0.5, max=5)),
             vol.Optional(CONF_INCLUDE_OFF_AS_STATE,

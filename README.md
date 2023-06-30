@@ -36,7 +36,6 @@ Name | Description | Required | Example
 **Integration options:**
 Name | Description 
 :--- | :--- 
-**Prompt Tone** | Enable tone on setting changes.
 **Temperature Step** | Step size for temperature set point.
 **Include "Off" State** | Include "Off" as a valid device state.
 **Use Fan-only Workaround** | Enable this option if device updates cause the device to turn on and switch to fan-only.

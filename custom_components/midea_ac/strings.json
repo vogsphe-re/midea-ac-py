@@ -10,7 +10,6 @@
           "port": "Port",
           "token": "Token",
           "k1": "K1",
-          "prompt_tone": "Prompt Tone",
           "temp_step": "Temperature Step",
           "include_off_as_state": "Include \"Off\" State",
           "use_fan_only_workaround": "Use Fan-only Workaround",
@@ -20,7 +19,6 @@
         "data_description": {
           "token": "Token for V3 devices",
           "k1": "K1 for V3 devices",
-          "prompt_tone": "Enable the beep when sending commands",
           "temp_step": "Step size for temperature set point"
         }
       }
@@ -37,7 +35,6 @@
       "init": {
         "title": "Options for Midea Smart AC Device",
         "data": {
-          "prompt_tone": "Prompt Tone",
           "temp_step": "Temperature Step",
           "include_off_as_state": "Include \"Off\" State",
           "use_fan_only_workaround": "Use Fan-only Workaround",
@@ -45,7 +42,6 @@
           "additional_operation_modes": "Additional Operation Modes"
         },
         "data_description": {
-          "prompt_tone": "Enable the beep when sending commands",
           "temp_step": "Step size for temperature set point"
         }
       }
