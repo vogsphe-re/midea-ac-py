@@ -33,10 +33,12 @@ async def async_setup_entry(
     id = config.get(CONF_ID)
     device = hass.data[DOMAIN][id]
 
+    # Add switch for beep/tone
+    add_entities([MideaSwitch(device, "prompt_tone", entity_category = EntityCategory.CONFIG)])
+
     # Add supported switch entities
     if helpers.method_exists(device, "toggle_display"):
         add_entities([MideaDisplaySwitch(device), ])
-
 
 class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
     """Display switch for Midea AC."""
@@ -100,3 +102,68 @@ class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
     async def async_turn_off(self) -> None:
         if self.is_on:
             await self._toggle_display()
+
+
+class MideaSwitch(SwitchEntity, RestoreEntity):
+    """Generic switch for Midea AC."""
+
+    def __init__(self, device, prop, entity_category: None):
+        self._device = device
+        self._prop = prop
+        self._entity_category = entity_category
+        self._on = False
+
+    async def _set_state(self, state) -> None:
+        helpers.set_properties(self._device, [self._prop], state)
+        await self.hass.async_add_executor_job(self._device.apply)
+        self.async_write_ha_state()
+        self._on = state
+
+    async def async_added_to_hass(self) -> None:
+        await super().async_added_to_hass()
+
+        if (last_state := await self.async_get_last_state()) is None:
+            return
+
+        # Restore previous state
+        if last_state.state not in (STATE_UNKNOWN, STATE_UNAVAILABLE):
+            self._on = last_state.state == STATE_ON
+
+    async def async_update(self) -> None:
+        # Grab the display on status
+        if self.available:
+            self._on = getattr(self._device, self._prop)
+
+    @property
+    def device_info(self) -> dict:
+        return {
+            "identifiers": {
+                (DOMAIN, self._device.id)
+            },
+        }
+
+    @property
+    def entity_category(self):
+        return self._entity_category
+
+    @property
+    def name(self) -> str:
+        return f"{DOMAIN}_{self._prop}_{self._device.id}"
+
+    @property
+    def unique_id(self) -> str:
+        return f"{self._device.id}-{self._prop}"
+
+    @property
+    def available(self) -> bool:
+        return self._device.online
+
+    @property
+    def is_on(self) -> bool:
+        return self._on
+
+    async def async_turn_on(self) -> None:
+        self._set_state(True)
+
+    async def async_turn_off(self) -> None:
+        self._set_state(False)
