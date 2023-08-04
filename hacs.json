@@ -1,5 +1,5 @@
 
 {
   "name": "Midea Smart AC",
-  "homeassistant": "0.110.2"
+  "render_readme": true
 }
