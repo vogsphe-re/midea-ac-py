@@ -2,9 +2,9 @@ name: Check autopep8
 
 on:
   push:
-    branches: [ "future" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "future" ]
+    branches: [ "main" ]
 
 jobs:
   check-autopep8:
