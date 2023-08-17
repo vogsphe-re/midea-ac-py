@@ -6,16 +6,12 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
-from msmart.device import air_conditioning as ac
 from msmart import __version__ as MSMART_VERISON
+from msmart.device import air_conditioning as ac
 
-
-# Local constants
-from .const import (
-    DOMAIN,
-    CONF_KEY
-)
 from . import helpers
+# Local constants
+from .const import CONF_KEY, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 

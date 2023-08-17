@@ -3,16 +3,17 @@ from __future__ import annotations
 
 import logging
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_ID, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN, EntityCategory
 from homeassistant.components.switch import SwitchEntity
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import (CONF_ID, STATE_ON, STATE_UNAVAILABLE,
+                                 STATE_UNKNOWN, EntityCategory)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
+from . import helpers
 # Local constants
 from .const import DOMAIN
-from . import helpers
 
 _LOGGER = logging.getLogger(__name__)
 
