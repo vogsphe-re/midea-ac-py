@@ -7,18 +7,13 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
 from msmart.device import air_conditioning as ac
-try:
-    # Try to import newer __version__ attribute
-    from msmart import __version__ as MSMART_VERISON
-except ImportError:
-    # Fallback to older VERSION attribute
-    from msmart.device import VERSION as MSMART_VERISON
+from msmart import __version__ as MSMART_VERISON
 
 
 # Local constants
 from .const import (
     DOMAIN,
-    CONF_K1
+    CONF_KEY
 )
 from . import helpers
 
@@ -51,16 +46,19 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
         # Configure token and k1 as needed
         token = config.get(CONF_TOKEN)
-        k1 = config.get(CONF_K1)
-        if token and k1:
-            await hass.async_add_executor_job(device.authenticate, k1, token)
+        key = config.get(CONF_KEY)
+        if token and key:
+            success = await device.authenticate(token, key)
+            if not success:
+                _LOGGER.error("Failed to authenticate with device.")
+                return False
 
         hass.data[DOMAIN][id] = device
 
     # Query device capabilities
     if helpers.method_exists(device, "get_capabilities"):
         _LOGGER.info("Querying device capabilities.")
-        await hass.async_add_executor_job(device.get_capabilities)
+        await device.get_capabilities()
 
     # Create platform entries
     hass.async_create_task(
@@ -86,7 +84,10 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
 
     # Remove device from global data
     id = config.get(CONF_ID)
-    hass.data[DOMAIN].pop(id)
+    try:
+        hass.data[DOMAIN].pop(id)
+    except KeyError:
+        _LOGGER.warning("Failed remove device from global data.")
 
     await hass.config_entries.async_forward_entry_unload(config_entry, "climate")
     await hass.config_entries.async_forward_entry_unload(config_entry, "sensor")

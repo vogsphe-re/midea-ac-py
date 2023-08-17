@@ -118,7 +118,7 @@ class MideaClimateACDevice(ClimateEntity):
         helpers.set_properties(self._device, ["fahrenheit", "fahrenheit_unit"],
                                self.hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
 
-        await self.hass.async_add_executor_job(self._device.apply)
+        await self._device.apply()
         self.async_write_ha_state()
         self._changed = False
 
@@ -126,10 +126,10 @@ class MideaClimateACDevice(ClimateEntity):
         """Retrieve latest state from the appliance if no changes made,
         otherwise update the remote device state."""
         if self._changed:
-            await self.hass.async_add_executor_job(self._device.apply)
+            await self._device.apply()
             self._changed = False
         elif not self._use_fan_only_workaround:
-            await self.hass.async_add_executor_job(self._device.refresh)
+            await self._device.refresh()
 
     async def async_added_to_hass(self) -> None:
         """Run when entity about to be added."""

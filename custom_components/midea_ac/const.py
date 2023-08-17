@@ -1,6 +1,6 @@
 DOMAIN = "midea_ac"
 
-CONF_K1 = "k1"
+CONF_KEY = "k1"
 CONF_PROMPT_TONE = "prompt_tone"
 CONF_TEMP_STEP = "temp_step"
 CONF_INCLUDE_OFF_AS_STATE = "include_off_as_state"
