@@ -30,7 +30,7 @@
       }
     },
     "abort":{
-      "already_configured": "The device ID has already been configured.",
+      "already_configured": "The device has already been configured.",
       "no_devices_found": "No device(s) found on the network."
     },
     "error":{
