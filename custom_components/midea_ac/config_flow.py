@@ -48,7 +48,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                 return await self.async_step_pick_device()
 
             # Attempt to find specified device
-            device = await Discover.discover_single(host, auto_connect=False)
+            device = await Discover.discover_single(host, auto_connect=False, timeout=2)
 
             if device is None:
                 errors["base"] = "no_devices_found"
@@ -100,7 +100,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
         }
 
         # Discover all devices
-        self._discovered_devices = await Discover.discover(auto_connect=False)
+        self._discovered_devices = await Discover.discover(auto_connect=False, timeout=2)
 
         # Create dict of device ID to friendly name
         devices_name = {
