@@ -49,9 +49,9 @@ Name | Description
 **Keep Last Known State** | Enable this option if there are too many `Unavailable` reports in the log.
 
 ## Getting Device Info
-Use the `midea-discover` command from midea-msmart to obtain device information.
+Use the `midea-discover` command from msmart-ng to obtain device information.
 ```shell
-pip install git+https://github.com/mill1000/midea-msmart.git
+pip install msmart-ng
 midea-discover
 ```
 _Note: Only devices of type 0xAC are supported. Ensure the supported property is True._
