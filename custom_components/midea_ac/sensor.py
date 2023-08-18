@@ -3,9 +3,10 @@ from __future__ import annotations
 
 import logging
 
+from homeassistant.components.sensor import (RestoreSensor, SensorDeviceClass,
+                                             SensorStateClass)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import TEMP_CELSIUS, CONF_ID
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass, RestoreSensor
+from homeassistant.const import CONF_ID, TEMP_CELSIUS
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 

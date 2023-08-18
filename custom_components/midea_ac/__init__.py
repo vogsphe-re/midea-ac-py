@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
 from msmart.device import air_conditioning as ac
+
 try:
     # Try to import newer __version__ attribute
     from msmart import __version__ as MSMART_VERISON
@@ -16,11 +17,8 @@ except ImportError:
 
 
 # Local constants
-from .const import (
-    DOMAIN,
-    CONF_K1
-)
 from . import helpers
+from .const import CONF_K1, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 

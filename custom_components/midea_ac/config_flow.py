@@ -1,25 +1,19 @@
 """Config flow for Midea Smart AC."""
 from __future__ import annotations
 
+import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
-import homeassistant.helpers.config_validation as cv
 from msmart.device import air_conditioning as ac
-import voluptuous as vol
 
 # Local constants
-from .const import (
-    DOMAIN,
-    CONF_K1,
-    CONF_PROMPT_TONE,
-    CONF_TEMP_STEP,
-    CONF_INCLUDE_OFF_AS_STATE,
-    CONF_USE_FAN_ONLY_WORKAROUND,
-    CONF_KEEP_LAST_KNOWN_ONLINE_STATE,
-    CONF_ADDITIONAL_OPERATION_MODES
-)
+from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_INCLUDE_OFF_AS_STATE,
+                    CONF_K1, CONF_KEEP_LAST_KNOWN_ONLINE_STATE,
+                    CONF_PROMPT_TONE, CONF_TEMP_STEP,
+                    CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
 
 
 class MideaConfigFlow(ConfigFlow, domain=DOMAIN):

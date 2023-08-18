@@ -12,29 +12,30 @@ import datetime
 import logging
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import TEMP_CELSIUS, TEMP_CELSIUS, TEMP_FAHRENHEIT, ATTR_TEMPERATURE, CONF_ID
+from homeassistant.const import (ATTR_TEMPERATURE, CONF_ID, TEMP_CELSIUS,
+                                 TEMP_FAHRENHEIT)
+
 try:
     from homeassistant.components.climate import ClimateEntity
 except ImportError:
     from homeassistant.components.climate import ClimateDevice as ClimateEntity
-from homeassistant.components.climate.const import (
-    SUPPORT_TARGET_TEMPERATURE, SUPPORT_FAN_MODE, SUPPORT_SWING_MODE,
-    SUPPORT_PRESET_MODE, PRESET_NONE, PRESET_ECO, PRESET_BOOST, PRESET_AWAY, PRESET_SLEEP)
+
+from homeassistant.components.climate.const import (PRESET_AWAY, PRESET_BOOST,
+                                                    PRESET_ECO, PRESET_NONE,
+                                                    PRESET_SLEEP,
+                                                    SUPPORT_FAN_MODE,
+                                                    SUPPORT_PRESET_MODE,
+                                                    SUPPORT_SWING_MODE,
+                                                    SUPPORT_TARGET_TEMPERATURE)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from msmart.device import air_conditioning as ac
 
-# Local constants
-from .const import (
-    DOMAIN,
-    CONF_PROMPT_TONE,
-    CONF_TEMP_STEP,
-    CONF_INCLUDE_OFF_AS_STATE,
-    CONF_USE_FAN_ONLY_WORKAROUND,
-    CONF_KEEP_LAST_KNOWN_ONLINE_STATE,
-    CONF_ADDITIONAL_OPERATION_MODES
-)
 from . import helpers
+# Local constants
+from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_INCLUDE_OFF_AS_STATE,
+                    CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_PROMPT_TONE,
+                    CONF_TEMP_STEP, CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
 
