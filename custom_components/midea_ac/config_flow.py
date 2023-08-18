@@ -9,7 +9,7 @@ from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
-from msmart.device import air_conditioning as ac
+from msmart.device import AirConditioner as AC
 from msmart.discover import Discover
 
 # Local constants
@@ -165,7 +165,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
         id = config.get(CONF_ID)
         host = config.get(CONF_HOST)
         port = config.get(CONF_PORT)
-        device = ac(host, int(id), port)
+        device = AC(ip=host, port=port, device_id=int(id))
 
         # Configure token and key as needed
         token = config.get(CONF_TOKEN)

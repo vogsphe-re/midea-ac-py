@@ -7,7 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
 from msmart import __version__ as MSMART_VERISON
-from msmart.device import air_conditioning as ac
+from msmart.device import AirConditioner as AC
 
 from . import helpers
 # Local constants
@@ -38,7 +38,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         id = config.get(CONF_ID)
         host = config.get(CONF_HOST)
         port = config.get(CONF_PORT)
-        device = ac(host, int(id), port)
+        device = AC(ip=host, port=port, device_id=int(id))
 
         # Configure token and k1 as needed
         token = config.get(CONF_TOKEN)
