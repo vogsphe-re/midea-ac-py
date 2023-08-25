@@ -42,7 +42,7 @@
     "step": {
       "init": {
         "data": {
-          "prompt_tone": "Prompt Tone",
+          "prompt_tone": "Beep",
           "temp_step": "Temperature Step",
           "include_off_as_state": "Include \"Off\" State",
           "use_fan_only_workaround": "Use Fan-only Workaround",

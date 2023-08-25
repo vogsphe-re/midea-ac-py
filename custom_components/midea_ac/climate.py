@@ -23,7 +23,7 @@ from msmart.device import AirConditioner as AC
 from . import helpers
 # Local constants
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_INCLUDE_OFF_AS_STATE,
-                    CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_PROMPT_TONE,
+                    CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_BEEP,
                     CONF_TEMP_STEP, CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
@@ -81,7 +81,7 @@ class MideaClimateACDevice(ClimateEntity):
         self._device = device
 
         # Apply options
-        self._device.prompt_tone = options.get(CONF_PROMPT_TONE)
+        self._device.beep = options.get(CONF_BEEP)
         self._device.keep_last_known_online_state = options.get(
             CONF_KEEP_LAST_KNOWN_ONLINE_STATE)
 

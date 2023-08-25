@@ -15,11 +15,11 @@ from msmart.discover import Discover
 # Local constants
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_INCLUDE_OFF_AS_STATE,
                     CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_KEY,
-                    CONF_PROMPT_TONE, CONF_TEMP_STEP,
+                    CONF_BEEP, CONF_TEMP_STEP,
                     CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
 
 _DEFAULT_OPTIONS = {
-    CONF_PROMPT_TONE: True,
+    CONF_BEEP: True,
     CONF_TEMP_STEP: 1.0,
     CONF_INCLUDE_OFF_AS_STATE: True,
     CONF_USE_FAN_ONLY_WORKAROUND: False,
@@ -214,8 +214,8 @@ class MideaOptionsFlow(OptionsFlow):
         options = self.config_entry.options
 
         data_schema = vol.Schema({
-            vol.Optional(CONF_PROMPT_TONE,
-                         default=options.get(CONF_PROMPT_TONE, True)): cv.boolean,
+            vol.Optional(CONF_BEEP,
+                         default=options.get(CONF_BEEP, True)): cv.boolean,
             vol.Optional(CONF_TEMP_STEP,
                          default=options.get(CONF_TEMP_STEP, 1.0)): vol.All(vol.Coerce(float), vol.Range(min=0.5, max=5)),
             vol.Optional(CONF_INCLUDE_OFF_AS_STATE,
