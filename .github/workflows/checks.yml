@@ -1,4 +1,4 @@
-name: Check autopep8
+name: Code Quality Checks
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  check-autopep8:
+  check-autopep8-isort:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -20,5 +20,6 @@ jobs:
         key: ${{ runner.os }}-pip-autopep8
     - run: |
         python -m pip install --upgrade pip
-        pip install autopep8
+        pip install autopep8 isort
     - run: autopep8 --diff --exit-code $(git ls-files '*.py')
+    - run: isort --diff --check $(git ls-files '*.py')

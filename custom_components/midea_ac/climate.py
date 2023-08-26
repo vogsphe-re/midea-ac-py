@@ -22,9 +22,10 @@ from msmart.device import AirConditioner as AC
 
 from . import helpers
 # Local constants
-from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_INCLUDE_OFF_AS_STATE,
-                    CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_BEEP,
-                    CONF_TEMP_STEP, CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
+from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP,
+                    CONF_INCLUDE_OFF_AS_STATE,
+                    CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_TEMP_STEP,
+                    CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
 

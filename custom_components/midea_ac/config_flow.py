@@ -13,10 +13,10 @@ from msmart.device import AirConditioner as AC
 from msmart.discover import Discover
 
 # Local constants
-from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_INCLUDE_OFF_AS_STATE,
+from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP,
+                    CONF_INCLUDE_OFF_AS_STATE,
                     CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_KEY,
-                    CONF_BEEP, CONF_TEMP_STEP,
-                    CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
+                    CONF_TEMP_STEP, CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
 
 _DEFAULT_OPTIONS = {
     CONF_BEEP: True,
