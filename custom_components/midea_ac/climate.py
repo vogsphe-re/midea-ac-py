@@ -329,11 +329,7 @@ class MideaClimateACDevice(ClimateEntity):
         """Return the supported preset modes."""
         modes = [PRESET_NONE]
 
-        # Add turbo/boost if supported by the device
-        if getattr(self._device, "supports_turbo_mode", False):
-            modes.append(PRESET_BOOST)
-
-        # Add away preset if in heat and supports freeze protection
+        # Add away preset in heat if it supports freeze protection
         if (getattr(self._device, "supports_freeze_protection_mode", False)
                 and self._device.operational_mode == AC.OperationalMode.HEAT):
             modes.append(PRESET_AWAY)
@@ -345,15 +341,20 @@ class MideaClimateACDevice(ClimateEntity):
                                                   AC.OperationalMode.DRY]):
             modes.append(PRESET_ECO)
 
-        # Add sleep preset in heat, cool or auto
+        # Add sleep and/or turbo preset in heat, cool or auto
         if self._device.operational_mode in [AC.OperationalMode.AUTO,
                                              AC.OperationalMode.COOL,
                                              AC.OperationalMode.HEAT]:
+            # TODO Always add sleep
             modes.append(PRESET_SLEEP)
+
+            # Add turbo/boost if supported by the device
+            if (getattr(self._device, "supports_turbo_mode", False) and :
+                modes.append(PRESET_BOOST)
 
         return modes
 
-    @property
+    @ property
     def preset_mode(self) -> str:
         """Get the current preset mode."""
         if self._device.eco_mode:
@@ -369,22 +370,22 @@ class MideaClimateACDevice(ClimateEntity):
 
     async def async_turn_on(self) -> None:
         """Turn on."""
-        self._device.power_state = True
-        self._changed = True
+        self._device.power_state=True
+        self._changed=True
         await self.apply_changes()
 
     async def async_turn_off(self) -> None:
         """Turn off."""
-        self._device.power_state = False
-        self._changed = True
+        self._device.power_state=False
+        self._changed=True
         await self.apply_changes()
 
-    @property
+    @ property
     def min_temp(self) -> float:
         """Return the minimum temperature."""
         return self._min_temperature
 
-    @property
+    @ property
     def max_temp(self) -> float:
         """Return the maximum temperature."""
         return self._max_temperature
