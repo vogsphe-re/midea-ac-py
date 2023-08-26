@@ -327,19 +327,28 @@ class MideaClimateACDevice(ClimateEntity):
     @property
     def preset_modes(self) -> list:
         """Return the supported preset modes."""
-        # TODO could check for supports_eco and supports_turbo
-        modes = [PRESET_NONE, PRESET_BOOST]
+        modes = [PRESET_NONE]
+
+        # Add turbo/boost if supported by the device
+        if getattr(self._device, "supports_turbo_mode", False):
+            modes.append(PRESET_BOOST)
 
         # Add away preset if in heat and supports freeze protection
-        if getattr(self._device, "supports_freeze_protection_mode", False) and self._device.operational_mode == AC.OperationalMode.HEAT:
+        if getattr(self._device, "supports_freeze_protection_mode", False)
+        and self._device.operational_mode == AC.OperationalMode.HEAT:
             modes.append(PRESET_AWAY)
 
-        # Add eco preset in cool, dry and auto
-        if self._device.operational_mode in [AC.OperationalMode.DRY,  AC.OperationalMode.COOL,  AC.OperationalMode.AUTO]:
+        # Add eco preset in cool, dry and auto if supported
+        if (getattr(self._device, "supports_eco_mode", False)
+            and self._device.operational_mode in [AC.OperationalMode.AUTO,
+                                                  AC.OperationalMode.COOL,
+                                                  AC.OperationalMode.DRY]):
             modes.append(PRESET_ECO)
 
         # Add sleep preset in heat, cool or auto
-        if self._device.operational_mode in [AC.OperationalMode.HEAT,  AC.OperationalMode.COOL,  AC.OperationalMode.AUTO]:
+        if self._device.operational_mode in [AC.OperationalMode.AUTO,
+                                             AC.OperationalMode.COOL,
+                                             AC.OperationalMode.HEAT]:
             modes.append(PRESET_SLEEP)
 
         return modes
