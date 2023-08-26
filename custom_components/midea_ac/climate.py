@@ -334,8 +334,8 @@ class MideaClimateACDevice(ClimateEntity):
             modes.append(PRESET_BOOST)
 
         # Add away preset if in heat and supports freeze protection
-        if getattr(self._device, "supports_freeze_protection_mode", False)
-        and self._device.operational_mode == AC.OperationalMode.HEAT:
+        if (getattr(self._device, "supports_freeze_protection_mode", False)
+                and self._device.operational_mode == AC.OperationalMode.HEAT):
             modes.append(PRESET_AWAY)
 
         # Add eco preset in cool, dry and auto if supported
