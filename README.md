@@ -7,6 +7,7 @@ Midea is an OEM for many brands including:
 Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Rotenso, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and more.
 
 ## Features
+* Automatic device discovery and configuration via the GUI.
 * Device capability detection. Only supported modes and functions are available.
 * Support for sleep, eco, boost (turbo) and away (freeze protection) presets.
 * Switch entity for device display.
@@ -26,7 +27,13 @@ Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpin
 ## Configuration & Options
 Midea Smart AC is configured via the GUI. See [the HA docs](https://www.home-assistant.io/getting-started/integration/) for more details.
 
-The device ID, IP, and port are required for all devices. V3 devices require an additional token and K1 parameter. Currently this needs to be [acquired manually](#getting-device-info).
+Devices can be automatically discovered and configured or manually configured.
+
+### Automatic Configuration
+For automatic configuration, select "Discover devices". Leave the host field blank to search the local network, or provide an IP/hostname to configure a specific device.
+
+### Manual Configuration
+For manual configuration, select "Configure manually". Enter the device ID, IP, and port. V3 devices require the token and key parameter. This information must be [acquired manually](#getting-device-info).
 
 #### Integration Configuration
 ---
@@ -36,22 +43,22 @@ Name | Description | Required | Example
 **Host** | Device IP address | Yes| 192.168.1.100
 **Port** | Device port | Yes | 6444
 **Token** | Device token | For V3 devices | ACEDDA53831AE5DC... (Length 128)
-**K1** | Device K1 | For V3 devices | CFFA10FC... (Length 64)
+**Key** | Device key | For V3 devices | CFFA10FC... (Length 64)
 
 #### Integration Options
 ---
 Name | Description 
 :--- | :--- 
-**Prompt Tone** | Enable beep on setting changes.
+**Beep** | Enable beep on setting changes.
 **Temperature Step** | Step size for temperature set point.
 **Include "Off" State** | Include "Off" as a valid device state.
 **Use Fan-only Workaround** | Enable this option if device updates cause the device to turn on and switch to fan-only.
 **Keep Last Known State** | Enable this option if there are too many `Unavailable` reports in the log.
 
 ## Getting Device Info
-Use the `midea-discover` command from midea-msmart to obtain device information.
+Use the `midea-discover` command from msmart-ng to obtain device information.
 ```shell
-pip install git+https://github.com/mill1000/midea-msmart.git
+pip install msmart-ng
 midea-discover
 ```
 _Note: Only devices of type 0xAC are supported. Ensure the supported property is True._
