@@ -349,7 +349,7 @@ class MideaClimateACDevice(ClimateEntity):
             modes.append(PRESET_SLEEP)
 
             # Add turbo/boost if supported by the device
-            if (getattr(self._device, "supports_turbo_mode", False) and :
+            if getattr(self._device, "supports_turbo_mode", False):
                 modes.append(PRESET_BOOST)
 
         return modes
