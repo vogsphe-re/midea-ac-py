@@ -370,14 +370,14 @@ class MideaClimateACDevice(ClimateEntity):
 
     async def async_turn_on(self) -> None:
         """Turn on."""
-        self._device.power_state=True
-        self._changed=True
+        self._device.power_state = True
+        self._changed = True
         await self.apply_changes()
 
     async def async_turn_off(self) -> None:
         """Turn off."""
-        self._device.power_state=False
-        self._changed=True
+        self._device.power_state = False
+        self._changed = True
         await self.apply_changes()
 
     @ property
