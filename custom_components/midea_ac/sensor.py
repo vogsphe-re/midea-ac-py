@@ -79,7 +79,13 @@ class MideaTemperatureSensor(RestoreSensor):
 
     @property
     def available(self) -> bool:
-        return self._device.online
+        # Sensor is unavailable if device is offline
+        if not self._device.online:
+            return False
+
+        # Sensor is unavailable if property doesn't exist or returns None
+        # TODO Could cause available but otherwise "unknown" values to be registered as unavailable
+        return getattr(self._device, self._prop, None) is None
 
     @property
     def device_class(self) -> str:
