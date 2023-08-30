@@ -1,7 +1,7 @@
 """Config flow for Midea Smart AC."""
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
@@ -160,7 +160,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(step_id="manual",
                                     data_schema=data_schema, errors=errors)
 
-    async def _test_manual_connection(self, config) -> ac | None:
+    async def _test_manual_connection(self, config) -> Optional[AC]:
         # Construct the device
         id = config.get(CONF_ID)
         host = config.get(CONF_HOST)
@@ -178,7 +178,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
 
         return device if success else None
 
-    async def _create_entry_from_device(self, device):
+    async def _create_entry_from_device(self, device) -> FlowResult:
         # Save the device into global data
         self.hass.data.setdefault(DOMAIN, {})
         self.hass.data[DOMAIN][device.id] = device

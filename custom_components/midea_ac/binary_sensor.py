@@ -44,7 +44,7 @@ async def async_setup_entry(
 class MideaBinarySensor(BinarySensorEntity, RestoreEntity):
     """Binary sensor for Midea AC."""
 
-    def __init__(self, device, prop):
+    def __init__(self, device, prop) -> None:
         self._device = device
         self._prop = prop
         self._on = False

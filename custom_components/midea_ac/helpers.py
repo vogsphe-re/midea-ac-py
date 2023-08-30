@@ -7,7 +7,7 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 
-def method_exists(device, method):
+def method_exists(device, method) -> bool:
     if callable(getattr(device, method, None)):
         return True
     else:
@@ -15,7 +15,7 @@ def method_exists(device, method):
         return False
 
 
-def property_exists(device, prop):
+def property_exists(device, prop) -> bool:
     if getattr(device, prop, None) is None:
         _LOGGER.warn(f"Device does not support '{prop}' property.")
         return False
@@ -23,7 +23,7 @@ def property_exists(device, prop):
     return True
 
 
-def set_properties(device, props, value):
+def set_properties(device, props, value) -> None:
     success = False
     for prop in props:
         if hasattr(device, prop):

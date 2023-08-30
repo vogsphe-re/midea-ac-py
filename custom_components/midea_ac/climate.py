@@ -75,7 +75,7 @@ async def async_setup_entry(
 class MideaClimateACDevice(ClimateEntity):
     """Climate entity for Midea AC device."""
 
-    def __init__(self, hass, device, options: dict):
+    def __init__(self, hass, device, options: dict) -> None:
         """Initialize the climate device."""
 
         self.hass = hass
