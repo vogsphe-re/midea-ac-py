@@ -9,6 +9,11 @@ A Home Assistant custom integration to control Midea (and associated brands) air
 Midea is an OEM for many brands including:
 Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Rotenso, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and more.
 
+__Note: Only air conditioner devices (type 0xAC) are supported.__ 
+
+See [Getting Device Info](#getting-device-info) to determine if a device is supported.
+
+
 ## Features
 * Automatic device discovery and configuration via the GUI.
 * Device capability detection. Only supported modes and functions are available.
@@ -64,7 +69,7 @@ Use the `midea-discover` command from [msmart-ng](https://github.com/mill1000/mi
 pip install msmart-ng
 midea-discover
 ```
-_Note: Only devices of type 0xAC are supported. Ensure the supported property is True._
+Check the output to ensure the type is 0xAC and the `supported` property is True.
 
 ## Gratitude
 This project is a fork of [mac-zhou/midea-ac-py](https://github.com/mac-zhou/midea-ac-py), and builds upon the work of:
