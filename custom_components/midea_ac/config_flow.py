@@ -9,9 +9,9 @@ from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
+from msmart.const import DeviceType
 from msmart.device import AirConditioner as AC
 from msmart.discover import Discover
-from msmart.const import DeviceType
 
 # Local constants
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP,
