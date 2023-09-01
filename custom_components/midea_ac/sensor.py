@@ -85,7 +85,7 @@ class MideaTemperatureSensor(RestoreSensor):
 
         # Sensor is unavailable if property doesn't exist or returns None
         # TODO Could cause available but otherwise "unknown" values to be registered as unavailable
-        return getattr(self._device, self._prop, None) is None
+        return getattr(self._device, self._prop, None) is not None
 
     @property
     def device_class(self) -> str:
