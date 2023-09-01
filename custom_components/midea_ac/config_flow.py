@@ -9,6 +9,7 @@ from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
+from msmart.const import DeviceType
 from msmart.device import AirConditioner as AC
 from msmart.discover import Discover
 
@@ -51,7 +52,9 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
             device = await Discover.discover_single(host, auto_connect=False, timeout=2)
 
             if device is None:
-                errors["base"] = "no_devices_found"
+                errors["base"] = "device_not_found"
+            elif device.type != DeviceType.AIR_CONDITIONER:
+                errors["base"] = "unsupported_device"
             else:
                 # Check if device has already been configured
                 await self.async_set_unique_id(device.id)
@@ -108,7 +111,8 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                 f"{device.name} - {device.id} ({device.ip})"
             )
             for device in self._discovered_devices
-            if device.id not in configured_devices
+            if (device.id not in configured_devices and
+                device.type == DeviceType.AIR_CONDITIONER)
         }
 
         # Check if there is at least one device
