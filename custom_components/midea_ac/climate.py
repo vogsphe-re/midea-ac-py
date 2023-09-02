@@ -94,7 +94,7 @@ class MideaClimateACDevice(ClimateEntity):
         if options.get(CONF_SHOW_ALL_PRESETS):
             # Add all presets
             self._preset_modes = [PRESET_NONE, PRESET_SLEEP, PRESET_AWAY,
-                                        PRESET_ECO, PRESET_BOOST]
+                                  PRESET_ECO, PRESET_BOOST]
         else:
             # Get supported preset list
             self._preset_modes = [
@@ -118,7 +118,7 @@ class MideaClimateACDevice(ClimateEntity):
 
         # Convert from Midea operational modes to HA HVAC mode
         self._hvac_modes = [_OPERATIONAL_MODE_TO_HVAC_MODE[m]
-                                for m in supported_op_modes]
+                            for m in supported_op_modes]
 
         # Include off mode if requested
         if self._include_off_as_state:
@@ -139,7 +139,8 @@ class MideaClimateACDevice(ClimateEntity):
             self._device, "supported_swing_modes", AC.SwingMode.list())
 
         # Convert Midea swing modes to strings
-        self._swing_modes = [m.name.capitalize() for m in supported_swing_modes]
+        self._swing_modes = [m.name.capitalize()
+                             for m in supported_swing_modes]
 
         # Dump all supported modes for debug
         _LOGGER.debug("Supported operational modes: '%s'.",
