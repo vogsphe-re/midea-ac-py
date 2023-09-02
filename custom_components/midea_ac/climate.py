@@ -93,59 +93,60 @@ class MideaClimateACDevice(ClimateEntity):
 
         if options.get(CONF_SHOW_ALL_PRESETS):
             # Add all presets
-            self._supported_presets += [PRESET_NONE, PRESET_SLEEP, PRESET_AWAY,
+            self._preset_modes = [PRESET_NONE, PRESET_SLEEP, PRESET_AWAY,
                                         PRESET_ECO, PRESET_BOOST]
         else:
             # Get supported preset list
-            self._supported_presets = [
+            self._preset_modes = [
                 PRESET_NONE,
                 PRESET_SLEEP,  # TODO Always add sleep
             ]
 
             # Only add presets supported by device
             if getattr(self._device, "supports_freeze_protection_mode", False):
-                self._supported_presets.append(PRESET_AWAY)
+                self._preset_modes.append(PRESET_AWAY)
 
             if getattr(self._device, "supports_eco_mode", False):
-                self._supported_presets.append(PRESET_ECO)
+                self._preset_modes.append(PRESET_ECO)
 
             if getattr(self._device, "supports_turbo_mode", False):
-                self._supported_presets.append(PRESET_BOOST)
+                self._preset_modes.append(PRESET_BOOST)
 
         # Fetch supported operational modes
         supported_op_modes = getattr(
             self._device, "supported_operation_modes",  AC.OperationalMode.list())
 
         # Convert from Midea operational modes to HA HVAC mode
-        self._operation_list = [_OPERATIONAL_MODE_TO_HVAC_MODE[m]
+        self._hvac_modes = [_OPERATIONAL_MODE_TO_HVAC_MODE[m]
                                 for m in supported_op_modes]
 
         # Include off mode if requested
         if self._include_off_as_state:
-            self._operation_list.append(HVACMode.OFF)
+            self._hvac_modes.append(HVACMode.OFF)
 
         # Append additional operation modes as needed
         additional_modes = options.get(CONF_ADDITIONAL_OPERATION_MODES) or ""
         for mode in filter(None, additional_modes.split(" ")):
-            if mode not in self._operation_list:
+            if mode not in self._hvac_modes:
                 _LOGGER.info(f"Adding additional mode '{mode}'.")
-                self._operation_list.append(mode)
+                self._hvac_modes.append(mode)
 
         # Convert Midea fan speeds to strings
-        self._fan_list = [m.name.capitalize() for m in AC.FanSpeed.list()]
+        self._fan_modes = [m.name.capitalize() for m in AC.FanSpeed.list()]
 
         # Fetch supported swing modes
         supported_swing_modes = getattr(
             self._device, "supported_swing_modes", AC.SwingMode.list())
 
         # Convert Midea swing modes to strings
-        self._swing_list = [m.name.capitalize() for m in supported_swing_modes]
+        self._swing_modes = [m.name.capitalize() for m in supported_swing_modes]
 
         # Dump all supported modes for debug
         _LOGGER.debug("Supported operational modes: '%s'.",
-                      self._operation_list)
-        _LOGGER.debug("Supported fan modes: '%s'.", self._swing_list)
-        _LOGGER.debug("Supported swing modes: '%s'.", self._swing_list)
+                      self._hvac_modes)
+        _LOGGER.debug("Supported preset modes: '%s'.", self._preset_modes)
+        _LOGGER.debug("Supported fan modes: '%s'.", self._fan_modes)
+        _LOGGER.debug("Supported swing modes: '%s'.", self._swing_modes)
 
         # Attempt to load min/max target temperatures
         self._min_temperature = getattr(
@@ -211,17 +212,17 @@ class MideaClimateACDevice(ClimateEntity):
     @property
     def hvac_modes(self) -> list:
         """Return the supported operation modes."""
-        return self._operation_list
+        return self._hvac_modes
 
     @property
     def fan_modes(self) -> list:
         """Return the supported fan modes."""
-        return self._fan_list
+        return self._fan_modes
 
     @property
     def swing_modes(self) -> list:
         """Return the supported swing modes."""
-        return self._swing_list
+        return self._swing_modes
 
     @property
     def assumed_state(self) -> bool:
@@ -352,14 +353,14 @@ class MideaClimateACDevice(ClimateEntity):
 
         # Add away preset in heat if supported
         if self._device.operational_mode == AC.OperationalMode.HEAT:
-            if PRESET_AWAY in self._supported_presets:
+            if PRESET_AWAY in self._preset_modes:
                 modes.append(PRESET_AWAY)
 
         # Add eco preset in cool, dry and auto if supported
         if self._device.operational_mode in [AC.OperationalMode.AUTO,
                                              AC.OperationalMode.COOL,
                                              AC.OperationalMode.DRY]:
-            if PRESET_ECO in self._supported_presets:
+            if PRESET_ECO in self._preset_modes:
                 modes.append(PRESET_ECO)
 
         # Add sleep and/or turbo preset in heat, cool or auto
@@ -370,7 +371,7 @@ class MideaClimateACDevice(ClimateEntity):
             modes.append(PRESET_SLEEP)
 
             # Add turbo/boost if supported by the device
-            if PRESET_BOOST in self._supported_presets:
+            if PRESET_BOOST in self._preset_modes:
                 modes.append(PRESET_BOOST)
 
         return modes
