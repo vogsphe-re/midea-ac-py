@@ -31,11 +31,12 @@
     },
     "abort": {
       "already_configured": "The device has already been configured.",
-      "no_devices_found": "No device(s) found on the network."
+      "no_devices_found": "No supported devices found on the network."
     },
     "error": {
       "cannot_connect": "A connection could not be made with these settings.",
-      "no_devices_found": "No device(s) found on the network."
+      "device_not_found": "Device not found on the network.",
+      "unsupported_device": "Device is not supported."
     }
   },
   "options": {
