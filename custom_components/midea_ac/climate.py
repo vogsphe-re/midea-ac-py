@@ -24,8 +24,8 @@ from . import helpers
 # Local constants
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP,
                     CONF_INCLUDE_OFF_AS_STATE,
-                    CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_TEMP_STEP,
-                    CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
+                    CONF_KEEP_LAST_KNOWN_ONLINE_STATE, CONF_SHOW_ALL_PRESETS,
+                    CONF_TEMP_STEP, CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -90,6 +90,27 @@ class MideaClimateACDevice(ClimateEntity):
         self._include_off_as_state = options.get(CONF_INCLUDE_OFF_AS_STATE)
         self._use_fan_only_workaround = options.get(
             CONF_USE_FAN_ONLY_WORKAROUND)
+
+        if options.get(CONF_SHOW_ALL_PRESETS):
+            # Add all presets
+            self._supported_presets += [PRESET_NONE, PRESET_SLEEP, PRESET_AWAY,
+                                        PRESET_ECO, PRESET_BOOST]
+        else:
+            # Get supported preset list
+            self._supported_presets = [
+                PRESET_NONE,
+                PRESET_SLEEP,  # TODO Always add sleep
+            ]
+
+            # Only add presets supported by device
+            if getattr(self._device, "supports_freeze_protection_mode", False):
+                self._supported_presets.append(PRESET_AWAY)
+
+            if getattr(self._device, "supports_eco_mode", False):
+                self._supported_presets.append(PRESET_ECO)
+
+            if getattr(self._device, "supports_turbo_mode", False):
+                self._supported_presets.append(PRESET_BOOST)
 
         # Fetch supported operational modes
         supported_op_modes = getattr(
@@ -329,17 +350,17 @@ class MideaClimateACDevice(ClimateEntity):
         """Return the supported preset modes."""
         modes = [PRESET_NONE]
 
-        # Add away preset in heat if it supports freeze protection
-        if (getattr(self._device, "supports_freeze_protection_mode", False)
-                and self._device.operational_mode == AC.OperationalMode.HEAT):
-            modes.append(PRESET_AWAY)
+        # Add away preset in heat if supported
+        if self._device.operational_mode == AC.OperationalMode.HEAT:
+            if PRESET_AWAY in self._supported_presets:
+                modes.append(PRESET_AWAY)
 
         # Add eco preset in cool, dry and auto if supported
-        if (getattr(self._device, "supports_eco_mode", False)
-            and self._device.operational_mode in [AC.OperationalMode.AUTO,
-                                                  AC.OperationalMode.COOL,
-                                                  AC.OperationalMode.DRY]):
-            modes.append(PRESET_ECO)
+        if self._device.operational_mode in [AC.OperationalMode.AUTO,
+                                             AC.OperationalMode.COOL,
+                                             AC.OperationalMode.DRY]:
+            if PRESET_ECO in self._supported_presets:
+                modes.append(PRESET_ECO)
 
         # Add sleep and/or turbo preset in heat, cool or auto
         if self._device.operational_mode in [AC.OperationalMode.AUTO,
@@ -349,7 +370,7 @@ class MideaClimateACDevice(ClimateEntity):
             modes.append(PRESET_SLEEP)
 
             # Add turbo/boost if supported by the device
-            if getattr(self._device, "supports_turbo_mode", False):
+            if PRESET_BOOST in self._supported_presets:
                 modes.append(PRESET_BOOST)
 
         return modes
