@@ -62,6 +62,9 @@ Name | Description
 **Include "Off" State** | Include "Off" as a valid device state.
 **Use Fan-only Workaround** | Enable this option if device updates cause the device to turn on and switch to fan-only.
 **Keep Last Known State** | Enable this option if there are too many `Unavailable` reports in the log.
+**Show All Presets** | Show all presets regardless of device's reported capabilities.
+**Additional Operation Modes** | Additional HVAC modes to make available in case the device's capabilities are incorrect.
+
 
 ## Getting Device Info
 Use the `midea-discover` command from [msmart-ng](https://github.com/mill1000/midea-msmart) to obtain device information.
