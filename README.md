@@ -70,7 +70,7 @@ Name | Description
 Use the `midea-discover` command from [msmart-ng](https://github.com/mill1000/midea-msmart) to obtain device information.
 ```shell
 pip install msmart-ng
-midea-discover
+msmart-ng discover
 ```
 Check the output to ensure the type is 0xAC and the `supported` property is True.
 
