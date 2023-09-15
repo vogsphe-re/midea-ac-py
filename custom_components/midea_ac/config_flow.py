@@ -67,7 +67,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                     return await self._create_entry_from_device(device)
                 else:
                     # Indicate a connection could not be made
-                    errors["base"] = "cannot_connect"
+                    return self.async_abort(reason="cannot_connect")
 
         data_schema = vol.Schema({
             vol.Optional(CONF_HOST, default=""): str
@@ -97,7 +97,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                     return await self._create_entry_from_device(device)
                 else:
                     # Indicate a connection could not be made
-                    errors["base"] = "cannot_connect"
+                    return self.async_abort(reason="cannot_connect")
 
         # Create a set of already configured devices by ID
         configured_devices = {

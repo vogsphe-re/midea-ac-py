@@ -31,6 +31,7 @@
     },
     "abort": {
       "already_configured": "The device has already been configured.",
+      "cannot_connect": "A connection could not be made.",
       "no_devices_found": "No supported devices found on the network."
     },
     "error": {
