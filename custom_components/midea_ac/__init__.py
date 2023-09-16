@@ -56,6 +56,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         _LOGGER.info("Querying device capabilities.")
         await device.get_capabilities()
 
+    # Prefetch the device state
+    await device.refresh()
+
     # Create platform entries
     hass.async_create_task(
         hass.config_entries.async_forward_entry_setup(config_entry, "climate"))
