@@ -64,7 +64,7 @@ Name | Description
 **Keep Last Known State** | Enable this option if there are too many `Unavailable` reports in the log.
 **Show All Presets** | Show all presets regardless of device's reported capabilities.
 **Additional Operation Modes** | Additional HVAC modes to make available in case the device's capabilities are incorrect.
-
+**Maximum Connection Lifetime** | Limit the time (in seconds) a connection to the device will be used before reconnecting. If left blank, the connection will persist indefinitely. If your device disconnects at regular intervals, set this to a value below the interval.
 
 ## Getting Device Info
 Use the `midea-discover` command from [msmart-ng](https://github.com/mill1000/midea-msmart) to obtain device information.
