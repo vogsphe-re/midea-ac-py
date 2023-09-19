@@ -4,7 +4,7 @@
 [![HACS Action](https://github.com/mill1000/midea-ac-py/actions/workflows/hacs.yml/badge.svg)](https://github.com/mill1000/midea-ac-py/actions/workflows/hacs.yml)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-A Home Assistant custom integration to control Midea (and associated brands) air conditioners via LAN.
+Home Assistant custom integration to control Midea (and associated brands) air conditioners via LAN.
 
 Midea is an OEM for many brands including:
 Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Rotenso, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and more.
@@ -32,7 +32,7 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
 2. Copy the `custom_components/midea_ac` directory into the `custom_components` directory.
 3. Restart Home Assistant.
 
-## Configuration & Options
+## Configuration
 Midea Smart AC is configured via the GUI. See [the HA docs](https://www.home-assistant.io/getting-started/integration/) for more details.
 
 Devices can be automatically discovered and configured or manually configured.
@@ -43,7 +43,6 @@ For automatic configuration, select "Discover devices". Leave the host field bla
 ### Manual Configuration
 For manual configuration, select "Configure manually". Enter the device ID, IP, and port. V3 devices require the token and key parameter. This information must be [acquired manually](#getting-device-info).
 
-#### Integration Configuration
 ---
 Name | Description | Required | Example 
 :--- | :--- | :--- | :---
@@ -53,18 +52,20 @@ Name | Description | Required | Example
 **Token** | Device token | For V3 devices | ACEDDA53831AE5DC... (Length 128)
 **Key** | Device key | For V3 devices | CFFA10FC... (Length 64)
 
-#### Integration Options
+## Integration Options
+Additional options are available to tweak integration behavior per device.
+
 ---
-Name | Description 
-:--- | :--- 
-**Beep** | Enable beep on setting changes.
-**Temperature Step** | Step size for temperature set point.
-**Include "Off" State** | Include "Off" as a valid device state.
-**Use Fan-only Workaround** | Enable this option if device updates cause the device to turn on and switch to fan-only.
-**Keep Last Known State** | Enable this option if there are too many `Unavailable` reports in the log.
-**Show All Presets** | Show all presets regardless of device's reported capabilities.
-**Additional Operation Modes** | Additional HVAC modes to make available in case the device's capabilities are incorrect.
-**Maximum Connection Lifetime** | Limit the time (in seconds) a connection to the device will be used before reconnecting. If left blank, the connection will persist indefinitely. If your device disconnects at regular intervals, set this to a value below the interval.
+Name | Default | Description 
+:--- | :--- | :--- 
+**Beep** | True | Enable beep on setting changes.
+**Temperature Step** | 1.0 | Step size for temperature set point.
+**Include "Off" State** | True | Include "Off" as a valid device state.
+**Use Fan-only Workaround** | False | Enable this option if device updates cause the device to turn on and switch to fan-only.
+**Keep Last Known State** | False | Enable this option if there are too many `Unavailable` reports in the log.
+**Show All Presets** | False | Show all presets regardless of device's reported capabilities.
+**Additional Operation Modes** | Empty | Additional HVAC modes to make available in case the device's capabilities are incorrect.
+**Maximum Connection Lifetime** | Empty | Limit the time (in seconds) a connection to the device will be used before reconnecting. If left blank, the connection will persist indefinitely. If your device disconnects at regular intervals, set this to a value below the interval.
 
 ## Getting Device Info
 Use the `midea-discover` command from [msmart-ng](https://github.com/mill1000/midea-msmart) to obtain device information.
