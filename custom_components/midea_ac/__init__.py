@@ -6,12 +6,13 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from msmart import __version__ as MSMART_VERISON
 from msmart.device import AirConditioner as AC
 
 from . import helpers
-# Local constants
 from .const import CONF_KEY, CONF_MAX_CONNECTION_LIFETIME, DOMAIN
+from .coordinator import MideaDeviceUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,31 +26,20 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     # Ensure the global data dict exists
     hass.data.setdefault(DOMAIN, {})
 
-    # Get config data from entry
-    config = config_entry.data
+    # Construct the device
+    id = config_entry.data[CONF_ID]
+    host = config_entry.data[CONF_HOST]
+    port = config_entry.data[CONF_PORT]
+    device = AC(ip=host, port=port, device_id=int(id))
 
-    # Attempt to get device from global data
-    id = config.get(CONF_ID)
-    device = hass.data[DOMAIN].get(id)
-
-    # Construct a new device if necessary
-    if device is None:
-        # Construct the device
-        id = config.get(CONF_ID)
-        host = config.get(CONF_HOST)
-        port = config.get(CONF_PORT)
-        device = AC(ip=host, port=port, device_id=int(id))
-
-        # Configure token and k1 as needed
-        token = config.get(CONF_TOKEN)
-        key = config.get(CONF_KEY)
-        if token and key:
-            success = await device.authenticate(token, key)
-            if not success:
-                _LOGGER.error("Failed to authenticate with device.")
-                return False
-
-        hass.data[DOMAIN][id] = device
+    # Configure token and k1 as needed
+    token = config_entry.data[CONF_TOKEN]
+    key = config_entry.data[CONF_KEY]
+    if token and key:
+        success = await device.authenticate(token, key)
+        if not success:
+            raise ConfigEntryAuthFailed(
+                "Failed to authenticate with device.")
 
     # Configure the connection lifetime
     lifetime = config_entry.options.get(CONF_MAX_CONNECTION_LIFETIME)
@@ -63,8 +53,12 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         _LOGGER.info("Querying device capabilities.")
         await device.get_capabilities()
 
-    # Prefetch the device state
-    await device.refresh()
+    # Create device coordinator and fetch data
+    coordinator = MideaDeviceUpdateCoordinator(hass, device)
+    await coordinator.async_config_entry_first_refresh()
+
+    # Store coordinator in global data
+    hass.data[DOMAIN][config_entry.entry_id] = coordinator
 
     # Create platform entries
     hass.async_create_task(

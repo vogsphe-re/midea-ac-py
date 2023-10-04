@@ -5,15 +5,13 @@ import logging
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (CONF_ID, STATE_ON, STATE_UNAVAILABLE,
-                                 STATE_UNKNOWN, EntityCategory)
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.restore_state import RestoreEntity
 
 from . import helpers
-# Local constants
 from .const import DOMAIN
+from .coordinator import MideaCoordinatorEntity, MideaDeviceUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -27,44 +25,24 @@ async def async_setup_entry(
 
     _LOGGER.info("Setting up switch platform.")
 
-    # Get config data from entry
-    config = config_entry.data
-
-    # Fetch device from global data
-    id = config.get(CONF_ID)
-    device = hass.data[DOMAIN][id]
+    # Fetch coordinator from global data
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     # Add supported switch entities
-    if helpers.method_exists(device, "toggle_display"):
-        add_entities([MideaDisplaySwitch(device), ])
+    if helpers.method_exists(coordinator.device, "toggle_display"):
+        add_entities([MideaDisplaySwitch(coordinator), ])
 
 
-class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
+class MideaDisplaySwitch(MideaCoordinatorEntity, SwitchEntity):
     """Display switch for Midea AC."""
 
-    def __init__(self, device) -> None:
-        self._device = device
-        self._on = False
+    def __init__(self, coordinator: MideaDeviceUpdateCoordinator) -> None:
+        MideaCoordinatorEntity.__init__(self, coordinator)
 
     async def _toggle_display(self) -> None:
-        await self._device.toggle_display()
-        self.async_write_ha_state()
-        self._on = not self._on
+        await self.coordinator.device.toggle_display()
 
-    async def async_added_to_hass(self) -> None:
-        await super().async_added_to_hass()
-
-        if (last_state := await self.async_get_last_state()) is None:
-            return
-
-        # Restore previous state
-        if last_state.state not in (STATE_UNKNOWN, STATE_UNAVAILABLE):
-            self._on = last_state.state == STATE_ON
-
-    async def async_update(self) -> None:
-        # Grab the display on status
-        if self.available:
-            self._on = self._device.display_on
+        await self.coordinator.async_request_refresh()
 
     @property
     def device_info(self) -> dict:
@@ -87,12 +65,9 @@ class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
         return f"{self._device.id}-display"
 
     @property
-    def available(self) -> bool:
-        return self._device.online
-
-    @property
     def is_on(self) -> bool | None:
-        return self._on
+        """Return the on state of the display."""
+        return self._device.display_on
 
     async def async_turn_on(self) -> None:
         if not self.is_on:

@@ -186,7 +186,6 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
     async def _create_entry_from_device(self, device) -> FlowResult:
         # Save the device into global data
         self.hass.data.setdefault(DOMAIN, {})
-        self.hass.data[DOMAIN][device.id] = device
 
         # Populate config data
         data = {
