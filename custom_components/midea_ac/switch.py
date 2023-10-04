@@ -1,4 +1,4 @@
-"""Platform for switch integration."""
+"""Switch platform for Midea Smart AC."""
 from __future__ import annotations
 
 import logging
@@ -46,6 +46,7 @@ class MideaDisplaySwitch(MideaCoordinatorEntity, SwitchEntity):
 
     @property
     def device_info(self) -> dict:
+        """Return info for device registery."""
         return {
             "identifiers": {
                 (DOMAIN, self._device.id)
@@ -53,16 +54,19 @@ class MideaDisplaySwitch(MideaCoordinatorEntity, SwitchEntity):
         }
 
     @property
-    def entity_category(self) -> str:
-        return EntityCategory.CONFIG
-
-    @property
     def name(self) -> str:
+        """Return the name of this entity."""
         return f"{DOMAIN}_display_{self._device.id}"
 
     @property
     def unique_id(self) -> str:
+        """Return the unique ID of this entity."""
         return f"{self._device.id}-display"
+
+    @property
+    def entity_category(self) -> str:
+        """Return the entity category of this entity."""
+        return EntityCategory.CONFIG
 
     @property
     def is_on(self) -> bool | None:
@@ -70,9 +74,11 @@ class MideaDisplaySwitch(MideaCoordinatorEntity, SwitchEntity):
         return self._device.display_on
 
     async def async_turn_on(self) -> None:
+        """Turn the display on."""
         if not self.is_on:
             await self._toggle_display()
 
     async def async_turn_off(self) -> None:
+        """Turn the display off."""
         if self.is_on:
             await self._toggle_display()

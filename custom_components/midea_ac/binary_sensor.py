@@ -1,4 +1,4 @@
-"""Platform for binary sensor integration."""
+"""Binary platform for Midea Smart AC."""
 from __future__ import annotations
 
 import logging
@@ -46,6 +46,7 @@ class MideaBinarySensor(MideaCoordinatorEntity, BinarySensorEntity):
 
     @property
     def device_info(self) -> dict:
+        """Return info for device registery."""
         return {
             "identifiers": {
                 (DOMAIN, self._device.id)
@@ -54,18 +55,22 @@ class MideaBinarySensor(MideaCoordinatorEntity, BinarySensorEntity):
 
     @property
     def name(self) -> str:
+        """Return the name of this entity."""
         return f"{DOMAIN}_{self._prop}_{self._device.id}"
 
     @property
     def unique_id(self) -> str:
+        """Return the unique ID of this entity."""
         return f"{self._device.id}-{self._prop}"
 
     @property
     def device_class(self) -> str:
+        """Return the device class of this entity."""
         return BinarySensorDeviceClass.PROBLEM
 
     @property
     def entity_category(self) -> str:
+        """Return the entity category of this entity."""
         return EntityCategory.DIAGNOSTIC
 
     @property

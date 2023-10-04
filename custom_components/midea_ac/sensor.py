@@ -1,4 +1,4 @@
-"""Platform for sensor integration."""
+"""Sensor platform for Midea Smart AC."""
 from __future__ import annotations
 
 import logging
@@ -47,6 +47,7 @@ class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
 
     @property
     def device_info(self) -> dict:
+        """Return info for device registery."""
         return {
             "identifiers": {
                 (DOMAIN, self._device.id)
@@ -55,10 +56,12 @@ class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
 
     @property
     def name(self) -> str:
+        """Return the name of this entity."""
         return f"{DOMAIN}_{self._prop}_{self._device.id}"
 
     @property
     def unique_id(self) -> str:
+        """Return the unique ID of this entity."""
         return f"{self._device.id}-{self._prop}"
 
     @property
@@ -73,14 +76,17 @@ class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
 
     @property
     def device_class(self) -> str:
+        """Return the device class of this entity."""
         return SensorDeviceClass.TEMPERATURE
 
     @property
     def state_class(self) -> str:
+        """Return the state class of this entity."""
         return SensorStateClass.MEASUREMENT
 
     @property
     def native_unit_of_measurement(self) -> str:
+        """Return the native units pf this entity."""
         return TEMP_CELSIUS
 
     @property

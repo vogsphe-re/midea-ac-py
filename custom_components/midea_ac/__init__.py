@@ -18,10 +18,10 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
-    """Set up a Midea AC device from a config entry."""
+    """Setup Midea Smart AC device from a config entry."""
 
-    _LOGGER.info(
-        f"Starting midea-ac-py. Using msmart version {MSMART_VERISON}.")
+    _LOGGER.info("Starting midea-ac-py. Using msmart-ng version %s.",
+                 MSMART_VERISON)
 
     # Ensure the global data dict exists
     hass.data.setdefault(DOMAIN, {})
@@ -78,14 +78,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
 
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
-
-    # Get config data from entry
-    config = config_entry.data
-
-    # Remove device from global data
-    id = config.get(CONF_ID)
+    """Unload a config entry."""
+    # Remove the coordinator from global data
     try:
-        hass.data[DOMAIN].pop(id)
+        hass.data[DOMAIN].pop(config_entry.data[CONF_ID])
     except KeyError:
         _LOGGER.warning("Failed remove device from global data.")
 
@@ -98,4 +94,5 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
 
 
 async def async_reload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> None:
+    """Reload a config entry."""
     await hass.config_entries.async_reload(config_entry.entry_id)
