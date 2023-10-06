@@ -47,7 +47,7 @@ class MideaDeviceUpdateCoordinator(DataUpdateCoordinator):
 
 
 class MideaCoordinatorEntity(CoordinatorEntity):
-    """Cordinator entity for Midea Smart AC."""
+    """Coordinator entity for Midea Smart AC."""
 
     def __init__(self, coordinator: MideaDeviceUpdateCoordinator) -> None:
         super().__init__(coordinator)
@@ -57,5 +57,5 @@ class MideaCoordinatorEntity(CoordinatorEntity):
 
     @property
     def available(self) -> bool:
-        """Check device availablity."""
+        """Check device availability."""
         return self._device.online

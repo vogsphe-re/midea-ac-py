@@ -46,7 +46,7 @@ class MideaBinarySensor(MideaCoordinatorEntity, BinarySensorEntity):
 
     @property
     def device_info(self) -> dict:
-        """Return info for device registery."""
+        """Return info for device registry."""
         return {
             "identifiers": {
                 (DOMAIN, self._device.id)

@@ -47,7 +47,7 @@ class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
 
     @property
     def device_info(self) -> dict:
-        """Return info for device registery."""
+        """Return info for device registry."""
         return {
             "identifiers": {
                 (DOMAIN, self._device.id)
@@ -66,7 +66,7 @@ class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
 
     @property
     def available(self) -> bool:
-        """Check entity availablity."""
+        """Check entity availability."""
         # Sensor is unavailable if device is offline
         if not super().available:
             return False
