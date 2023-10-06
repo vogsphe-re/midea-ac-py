@@ -100,5 +100,5 @@ class MideaTemperatureSensor(RestoreSensor):
         return TEMP_CELSIUS
 
     @property
-    def native_value(self) -> float:
+    def native_value(self) -> float | None:
         return self._native_value

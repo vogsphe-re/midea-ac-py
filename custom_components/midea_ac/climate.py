@@ -89,7 +89,7 @@ class MideaClimateACDevice(ClimateEntity):
         self._target_temperature_step = options.get(CONF_TEMP_STEP)
         self._include_off_as_state = options.get(CONF_INCLUDE_OFF_AS_STATE)
         self._use_fan_only_workaround = options.get(
-            CONF_USE_FAN_ONLY_WORKAROUND)
+            CONF_USE_FAN_ONLY_WORKAROUND, False)
 
         if options.get(CONF_SHOW_ALL_PRESETS):
             # Add all presets
@@ -206,7 +206,7 @@ class MideaClimateACDevice(ClimateEntity):
         return SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE | SUPPORT_SWING_MODE | SUPPORT_PRESET_MODE
 
     @property
-    def target_temperature_step(self) -> float:
+    def target_temperature_step(self) -> float | None:
         """Return the supported target temperature step."""
         return self._target_temperature_step
 
@@ -251,12 +251,12 @@ class MideaClimateACDevice(ClimateEntity):
         return TEMP_CELSIUS
 
     @property
-    def current_temperature(self) -> float:
+    def current_temperature(self) -> float | None:
         """Return the current temperature."""
         return self._device.indoor_temperature
 
     @property
-    def target_temperature(self) -> float:
+    def target_temperature(self) -> float | None:
         """Return the current target temperature."""
         return self._device.target_temperature
 

@@ -42,7 +42,7 @@ async def async_setup_entry(
 class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
     """Display switch for Midea AC."""
 
-    def __init__(self, device):
+    def __init__(self, device) -> None:
         self._device = device
         self._on = False
 
@@ -75,7 +75,7 @@ class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
         }
 
     @property
-    def entity_category(self):
+    def entity_category(self) -> str:
         return EntityCategory.CONFIG
 
     @property
@@ -91,7 +91,7 @@ class MideaDisplaySwitch(SwitchEntity, RestoreEntity):
         return self._device.online
 
     @property
-    def is_on(self) -> bool:
+    def is_on(self) -> bool | None:
         return self._on
 
     async def async_turn_on(self) -> None:
