@@ -286,17 +286,11 @@ class MideaClimateACDevice(ClimateEntity):
 
     async def async_set_temperature(self, **kwargs) -> None:
         """Set a new target temperatures."""
-        if kwargs.get(ATTR_TEMPERATURE) is not None:
-            # grab temperature from front end UI
-            temp = kwargs.get(ATTR_TEMPERATURE)
+        if (temperature := kwargs.get(ATTR_TEMPERATURE)) is None:
+            return
 
-            # round temperature to nearest .5
-            temp = round(temp * 2) / 2
-
-            # send temperature to unit
-            self._device.target_temperature = temp
-            self._changed = True
-            await self.apply_changes()
+        # Round temperature to nearest .5
+        self._device.target_temperature = round(temperature * 2) / 2
 
     async def async_set_swing_mode(self, swing_mode) -> None:
         """Set the swing mode."""
