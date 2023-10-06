@@ -1,7 +1,6 @@
-"""Climate platform from Midea AC devices."""
+"""Climate platform from Midea Smart AC."""
 from __future__ import annotations
 
-import datetime
 import logging
 
 from homeassistant.components.climate import ClimateEntity
@@ -14,22 +13,18 @@ from homeassistant.components.climate.const import (PRESET_AWAY, PRESET_BOOST,
                                                     SUPPORT_TARGET_TEMPERATURE,
                                                     HVACMode)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (ATTR_TEMPERATURE, CONF_ID, TEMP_CELSIUS,
-                                 TEMP_FAHRENHEIT)
+from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS, TEMP_FAHRENHEIT
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from msmart.device import AirConditioner as AC
 
 from . import helpers
-# Local constants
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP,
                     CONF_INCLUDE_OFF_AS_STATE, CONF_SHOW_ALL_PRESETS,
                     CONF_TEMP_STEP, CONF_USE_FAN_ONLY_WORKAROUND, DOMAIN)
+from .coordinator import MideaCoordinatorEntity, MideaDeviceUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
-
-# Override default scan interval?
-SCAN_INTERVAL = datetime.timedelta(seconds=15)
 
 # Dictionaries to convert from Midea mode to HA mode
 _OPERATIONAL_MODE_TO_HVAC_MODE: dict[AC.OperationalMode, HVACMode] = {
@@ -58,27 +53,26 @@ async def async_setup_entry(
 
     _LOGGER.info("Setting up climate platform.")
 
-    # Get config and options data from entry
-    config = config_entry.data
-    options = config_entry.options
-
-    # Fetch device from global data
-    id = config.get(CONF_ID)
-    device = hass.data[DOMAIN][id]
+    # Fetch coordinator from global data
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     add_entities([
-        MideaClimateACDevice(hass, device, options)
+        MideaClimateACDevice(hass, coordinator, config_entry.options)
     ])
 
 
-class MideaClimateACDevice(ClimateEntity):
+class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     """Climate entity for Midea AC device."""
 
-    def __init__(self, hass, device: AC, options: dict) -> None:
+    def __init__(self,
+                 hass: HomeAssistant,
+                 coordinator: MideaDeviceUpdateCoordinator,
+                 options: dict
+                 ) -> None:
         """Initialize the climate device."""
+        MideaCoordinatorEntity.__init__(self, coordinator)
 
         self.hass = hass
-        self._device = device
 
         # Apply options
         self._device.beep = options.get(CONF_BEEP, False)
@@ -151,38 +145,19 @@ class MideaClimateACDevice(ClimateEntity):
         self._max_temperature = getattr(
             self._device, "max_target_temperature", 30)
 
-        self._changed = False
-
-    async def apply_changes(self) -> None:
+    async def _apply(self) -> None:
         """Apply changes to the device."""
-        if not self._changed:
-            return
 
         # Display on the AC should use the same unit as homeassistant
         helpers.set_properties(self._device, ["fahrenheit", "fahrenheit_unit"],
                                self.hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
 
-        await self._device.apply()
-        self.async_write_ha_state()
-        self._changed = False
-
-    async def async_update(self) -> None:
-        """Update the device state."""
-        if self._changed:
-            await self._device.apply()
-            self._changed = False
-        elif not self._use_fan_only_workaround:
-            await self._device.refresh()
-
-    async def async_added_to_hass(self) -> None:
-        """Callback when entity is about to be added."""
-        await super().async_added_to_hass()
-
-        # Populate data ASAP
-        await self.async_update()
+        # Apply via the coordinator
+        await self.coordinator.apply()
 
     @property
     def device_info(self) -> dict:
+        """Return info for device registry."""
         return {
             "identifiers": {
                 (DOMAIN, self._device.id)
@@ -192,34 +167,14 @@ class MideaClimateACDevice(ClimateEntity):
         }
 
     @property
-    def available(self) -> bool:
-        """Check if the device is available."""
-        return self._device.online
+    def name(self) -> str:
+        """Return the name of the climate device."""
+        return f"{DOMAIN}_{self._device.id}"
 
     @property
-    def supported_features(self) -> int:
-        """Return the supported features."""
-        return SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE | SUPPORT_SWING_MODE | SUPPORT_PRESET_MODE
-
-    @property
-    def target_temperature_step(self) -> float | None:
-        """Return the supported target temperature step."""
-        return self._target_temperature_step
-
-    @property
-    def hvac_modes(self) -> list:
-        """Return the supported operation modes."""
-        return self._hvac_modes
-
-    @property
-    def fan_modes(self) -> list:
-        """Return the supported fan modes."""
-        return self._fan_modes
-
-    @property
-    def swing_modes(self) -> list:
-        """Return the supported swing modes."""
-        return self._swing_modes
+    def unique_id(self) -> str:
+        """Return the unique ID of this device."""
+        return f"{self._device.id}"
 
     @property
     def assumed_state(self) -> bool:
@@ -232,19 +187,29 @@ class MideaClimateACDevice(ClimateEntity):
         return not self._use_fan_only_workaround
 
     @property
-    def unique_id(self) -> str:
-        """Return the unique ID of this device."""
-        return f"{self._device.id}"
+    def supported_features(self) -> int:
+        """Return the supported features."""
+        return SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE | SUPPORT_SWING_MODE | SUPPORT_PRESET_MODE
 
     @property
-    def name(self) -> str:
-        """Return the name of the climate device."""
-        return f"{DOMAIN}_{self._device.id}"
+    def target_temperature_step(self) -> float | None:
+        """Return the supported target temperature step."""
+        return self._target_temperature_step
 
     @property
     def temperature_unit(self) -> str:
         """Return the unit of measurement."""
         return TEMP_CELSIUS
+
+    @ property
+    def min_temp(self) -> float:
+        """Return the minimum temperature."""
+        return self._min_temperature
+
+    @ property
+    def max_temp(self) -> float:
+        """Return the maximum temperature."""
+        return self._max_temperature
 
     @property
     def current_temperature(self) -> float | None:
@@ -256,6 +221,54 @@ class MideaClimateACDevice(ClimateEntity):
         """Return the current target temperature."""
         return self._device.target_temperature
 
+    async def async_set_temperature(self, **kwargs) -> None:
+        """Set a new target temperatures."""
+        if (temperature := kwargs.get(ATTR_TEMPERATURE)) is None:
+            return
+
+        # Round temperature to nearest .5
+        self._device.target_temperature = round(temperature * 2) / 2
+        await self._apply()
+
+    @property
+    def swing_modes(self) -> list:
+        """Return the supported swing modes."""
+        return self._swing_modes
+
+    @property
+    def swing_mode(self) -> str:
+        """Return the current swing mode."""
+        return self._device.swing_mode.name.capitalize()
+
+    async def async_set_swing_mode(self, swing_mode) -> None:
+        """Set the swing mode."""
+        self._device.swing_mode = AC.SwingMode.get_from_name(
+            swing_mode.upper(), self._device.swing_mode)
+
+        await self._apply()
+
+    @property
+    def fan_modes(self) -> list:
+        """Return the supported fan modes."""
+        return self._fan_modes
+
+    @property
+    def fan_mode(self) -> str:
+        """Return the current fan speed mode."""
+        return self._device.fan_speed.name.capitalize()
+
+    async def async_set_fan_mode(self, fan_mode) -> None:
+        """Set the fan mode."""
+        self._device.fan_speed = AC.FanSpeed.get_from_name(
+            fan_mode.upper(), self._device.fan_speed)
+
+        await self._apply()
+
+    @property
+    def hvac_modes(self) -> list:
+        """Return the supported operation modes."""
+        return self._hvac_modes
+
     @property
     def hvac_mode(self) -> str:
         """Return current HVAC mode."""
@@ -264,38 +277,6 @@ class MideaClimateACDevice(ClimateEntity):
 
         # TODO What else to default to?
         return _OPERATIONAL_MODE_TO_HVAC_MODE.get(self._device.operational_mode, HVACMode.OFF)
-
-    @property
-    def fan_mode(self) -> str:
-        """Return the current fan speed mode."""
-        return self._device.fan_speed.name.capitalize()
-
-    @property
-    def swing_mode(self) -> str:
-        """Return the current swing mode."""
-        return self._device.swing_mode.name.capitalize()
-
-    async def async_set_temperature(self, **kwargs) -> None:
-        """Set a new target temperatures."""
-        if (temperature := kwargs.get(ATTR_TEMPERATURE)) is None:
-            return
-
-        # Round temperature to nearest .5
-        self._device.target_temperature = round(temperature * 2) / 2
-
-    async def async_set_swing_mode(self, swing_mode) -> None:
-        """Set the swing mode."""
-        self._device.swing_mode = AC.SwingMode.get_from_name(
-            swing_mode.upper(), self._device.swing_mode)
-        self._changed = True
-        await self.apply_changes()
-
-    async def async_set_fan_mode(self, fan_mode) -> None:
-        """Set the fan mode."""
-        self._device.fan_speed = AC.FanSpeed.get_from_name(
-            fan_mode.upper(), self._device.fan_speed)
-        self._changed = True
-        await self.apply_changes()
 
     async def async_set_hvac_mode(self, hvac_mode) -> None:
         """Set the HVAC mode."""
@@ -308,29 +289,7 @@ class MideaClimateACDevice(ClimateEntity):
             self._device.operational_mode = _HVAC_MODE_TO_OPERATIONAL_MODE.get(
                 hvac_mode, self._device.operational_mode)
 
-        self._changed = True
-        await self.apply_changes()
-
-    async def async_set_preset_mode(self, preset_mode: str) -> None:
-        """Set the preset mode."""
-        # TODO Assuming these are all mutually exclusive
-        self._device.eco_mode = False
-        self._device.turbo_mode = False
-        self._device.freeze_protection_mode = False
-        self._device.sleep_mode = False
-
-        # Enable proper mode
-        if preset_mode == PRESET_BOOST:
-            self._device.turbo_mode = True
-        elif preset_mode == PRESET_ECO:
-            self._device.eco_mode = True
-        elif preset_mode == PRESET_AWAY:
-            self._device.freeze_protection_mode = True
-        elif preset_mode == PRESET_SLEEP:
-            self._device.sleep_mode = True
-
-        self._changed = True
-        await self.apply_changes()
+        await self._apply()
 
     @property
     def preset_modes(self) -> list:
@@ -376,12 +335,22 @@ class MideaClimateACDevice(ClimateEntity):
         else:
             return PRESET_NONE
 
-    @ property
-    def min_temp(self) -> float:
-        """Return the minimum temperature."""
-        return self._min_temperature
+    async def async_set_preset_mode(self, preset_mode: str) -> None:
+        """Set the preset mode."""
+        # TODO Assuming these are all mutually exclusive
+        self._device.eco_mode = False
+        self._device.turbo_mode = False
+        self._device.freeze_protection_mode = False
+        self._device.sleep_mode = False
 
-    @ property
-    def max_temp(self) -> float:
-        """Return the maximum temperature."""
-        return self._max_temperature
+        # Enable proper mode
+        if preset_mode == PRESET_BOOST:
+            self._device.turbo_mode = True
+        elif preset_mode == PRESET_ECO:
+            self._device.eco_mode = True
+        elif preset_mode == PRESET_AWAY:
+            self._device.freeze_protection_mode = True
+        elif preset_mode == PRESET_SLEEP:
+            self._device.sleep_mode = True
+
+        await self._apply()

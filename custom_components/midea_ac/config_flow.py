@@ -13,7 +13,6 @@ from msmart.const import DeviceType
 from msmart.device import AirConditioner as AC
 from msmart.discover import Discover
 
-# Local constants
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP,
                     CONF_INCLUDE_OFF_AS_STATE, CONF_KEY,
                     CONF_MAX_CONNECTION_LIFETIME, CONF_SHOW_ALL_PRESETS,
@@ -31,9 +30,10 @@ _DEFAULT_OPTIONS = {
 
 
 class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
+    """Config flow for Midea Smart AC."""
 
     async def async_step_user(self, _) -> FlowResult:
-
+        """Handle a config flow initialized by the user."""
         return self.async_show_menu(
             step_id="user",
             menu_options=["discover", "manual"],
@@ -42,6 +42,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_discover(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
+        """Handle the discovery step of config flow."""
         errors = {}
 
         if user_input is not None:
@@ -78,7 +79,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_pick_device(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        errors = {}
+        """Handle the pick device step of config flow."""
 
         if user_input is not None:
             # Find selected device
@@ -128,6 +129,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                                     data_schema=data_schema)
 
     async def async_step_manual(self, user_input) -> FlowResult:
+        """Handle the manual step of config flow."""
         errors = {}
 
         if user_input is not None:
@@ -186,7 +188,6 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
     async def _create_entry_from_device(self, device) -> FlowResult:
         # Save the device into global data
         self.hass.data.setdefault(DOMAIN, {})
-        self.hass.data[DOMAIN][device.id] = device
 
         # Populate config data
         data = {
@@ -203,15 +204,18 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
     @ staticmethod
     @ callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
+        """Return the options flow."""
         return MideaOptionsFlow(config_entry)
 
 
 class MideaOptionsFlow(OptionsFlow):
+    """Options flow from Midea Smart AC."""
 
     def __init__(self, config_entry: ConfigEntry) -> None:
         self.config_entry = config_entry
 
     async def async_step_init(self, user_input=None) -> FlowResult:
+        """Handle the first step of options flow."""
         if user_input is not None:
             # Confusingly, data argument in OptionsFlow is passed to async_setup_entry in the options member
             return self.async_create_entry(title="", data=user_input)
