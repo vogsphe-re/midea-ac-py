@@ -62,7 +62,6 @@ Name | Default | Description
 **Temperature Step** | 1.0 | Step size for temperature set point.
 **Include "Off" State** | True | Include "Off" as a valid device state.
 **Use Fan-only Workaround** | False | Enable this option if device updates cause the device to turn on and switch to fan-only.
-**Keep Last Known State** | False | Enable this option if there are too many `Unavailable` reports in the log.
 **Show All Presets** | False | Show all presets regardless of device's reported capabilities.
 **Additional Operation Modes** | Empty | Additional HVAC modes to make available in case the device's capabilities are incorrect.
 **Maximum Connection Lifetime** | Empty | Limit the time (in seconds) a connection to the device will be used before reconnecting. If left blank, the connection will persist indefinitely. If your device disconnects at regular intervals, set this to a value below the interval.
