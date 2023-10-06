@@ -81,8 +81,7 @@ class MideaClimateACDevice(ClimateEntity):
         self._device = device
 
         # Apply options
-        self._device.beep = options.get(CONF_BEEP)
-
+        self._device.beep = options.get(CONF_BEEP, False)
         self._target_temperature_step = options.get(CONF_TEMP_STEP)
         self._include_off_as_state = options.get(CONF_INCLUDE_OFF_AS_STATE)
         self._use_fan_only_workaround = options.get(
