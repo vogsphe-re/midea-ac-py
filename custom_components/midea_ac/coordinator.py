@@ -38,7 +38,6 @@ class MideaDeviceUpdateCoordinator(DataUpdateCoordinator):
 
         # Update state
         await self.async_request_refresh()
-        # self.async_write_ha_state() # TODO?
 
     @property
     def device(self) -> AC:

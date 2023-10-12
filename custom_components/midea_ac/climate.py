@@ -89,7 +89,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
             # Get supported preset list
             self._preset_modes = [
                 PRESET_NONE,
-                PRESET_SLEEP,  # TODO Always add sleep
+                PRESET_SLEEP
             ]
 
             # Only add presets supported by device
@@ -275,7 +275,6 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         if self._include_off_as_state and not self._device.power_state:
             return HVACMode.OFF
 
-        # TODO What else to default to?
         return _OPERATIONAL_MODE_TO_HVAC_MODE.get(self._device.operational_mode, HVACMode.OFF)
 
     async def async_set_hvac_mode(self, hvac_mode) -> None:
@@ -312,7 +311,6 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         if self._device.operational_mode in [AC.OperationalMode.AUTO,
                                              AC.OperationalMode.COOL,
                                              AC.OperationalMode.HEAT]:
-            # TODO Always add sleep
             modes.append(PRESET_SLEEP)
 
             # Add turbo/boost if supported by the device
@@ -337,7 +335,6 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
 
     async def async_set_preset_mode(self, preset_mode: str) -> None:
         """Set the preset mode."""
-        # TODO Assuming these are all mutually exclusive
         self._device.eco_mode = False
         self._device.turbo_mode = False
         self._device.freeze_protection_mode = False
