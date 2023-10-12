@@ -81,6 +81,11 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         self._use_fan_only_workaround = options.get(
             CONF_USE_FAN_ONLY_WORKAROUND, False)
 
+        # Setup default supported features
+        self._supported_features = (
+            SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE | SUPPORT_PRESET_MODE)
+
+        # Setup supported presets
         if options.get(CONF_SHOW_ALL_PRESETS):
             # Add all presets
             self._preset_modes = [PRESET_NONE, PRESET_SLEEP, PRESET_AWAY,
@@ -127,6 +132,10 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         # Fetch supported swing modes
         supported_swing_modes = getattr(
             self._device, "supported_swing_modes", AC.SwingMode.list())
+
+        # If device supports any swing mode, add it to supported features
+        if supported_swing_modes != [AC.SwingMode.OFF]:
+            self._supported_features |= SUPPORT_SWING_MODE
 
         # Convert Midea swing modes to strings
         self._swing_modes = [m.name.capitalize()
@@ -189,7 +198,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     @property
     def supported_features(self) -> int:
         """Return the supported features."""
-        return SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE | SUPPORT_SWING_MODE | SUPPORT_PRESET_MODE
+        return self._supported_features
 
     @property
     def target_temperature_step(self) -> float | None:
