@@ -118,7 +118,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         additional_modes = options.get(CONF_ADDITIONAL_OPERATION_MODES) or ""
         for mode in filter(None, additional_modes.split(" ")):
             if mode not in self._hvac_modes:
-                _LOGGER.info(f"Adding additional mode '{mode}'.")
+                _LOGGER.info("Adding additional mode '%s'.", mode)
                 self._hvac_modes.append(mode)
 
         # Convert Midea fan speeds to strings
