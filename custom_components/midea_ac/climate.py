@@ -231,7 +231,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         await self._apply()
 
     @property
-    def swing_modes(self) -> list:
+    def swing_modes(self) -> list[str]:
         """Return the supported swing modes."""
         return self._swing_modes
 
@@ -240,7 +240,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         """Return the current swing mode."""
         return self._device.swing_mode.name.capitalize()
 
-    async def async_set_swing_mode(self, swing_mode) -> None:
+    async def async_set_swing_mode(self, swing_mode: str) -> None:
         """Set the swing mode."""
         self._device.swing_mode = AC.SwingMode.get_from_name(
             swing_mode.upper(), self._device.swing_mode)
@@ -248,7 +248,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         await self._apply()
 
     @property
-    def fan_modes(self) -> list:
+    def fan_modes(self) -> list[str]:
         """Return the supported fan modes."""
         return self._fan_modes
 
@@ -257,7 +257,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         """Return the current fan speed mode."""
         return self._device.fan_speed.name.capitalize()
 
-    async def async_set_fan_mode(self, fan_mode) -> None:
+    async def async_set_fan_mode(self, fan_mode: str) -> None:
         """Set the fan mode."""
         self._device.fan_speed = AC.FanSpeed.get_from_name(
             fan_mode.upper(), self._device.fan_speed)
@@ -265,19 +265,19 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         await self._apply()
 
     @property
-    def hvac_modes(self) -> list:
+    def hvac_modes(self) -> list[HVACMode]:
         """Return the supported operation modes."""
         return self._hvac_modes
 
     @property
-    def hvac_mode(self) -> str:
+    def hvac_mode(self) -> HVACMode:
         """Return current HVAC mode."""
         if self._include_off_as_state and not self._device.power_state:
             return HVACMode.OFF
 
         return _OPERATIONAL_MODE_TO_HVAC_MODE.get(self._device.operational_mode, HVACMode.OFF)
 
-    async def async_set_hvac_mode(self, hvac_mode) -> None:
+    async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set the HVAC mode."""
         if self._include_off_as_state and hvac_mode == HVACMode.OFF:
             self._device.power_state = False
@@ -291,7 +291,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         await self._apply()
 
     @property
-    def preset_modes(self) -> list:
+    def preset_modes(self) -> list[str]:
         """Return the supported preset modes."""
         modes = [PRESET_NONE]
 
