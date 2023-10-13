@@ -26,6 +26,8 @@ from .coordinator import MideaCoordinatorEntity, MideaDeviceUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
+_FAN_CUSTOM = "Custom"
+
 # Dictionaries to convert from Midea mode to HA mode
 _OPERATIONAL_MODE_TO_HVAC_MODE: dict[AC.OperationalMode, HVACMode] = {
     AC.OperationalMode.AUTO: HVACMode.AUTO,
@@ -121,8 +123,13 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
                 _LOGGER.info("Adding additional mode '%s'.", mode)
                 self._hvac_modes.append(mode)
 
-        # Convert Midea fan speeds to strings
-        self._fan_modes = [m.name.capitalize() for m in AC.FanSpeed.list()]
+        # Fetch supported fan speeds
+        supported_fan_speeds = getattr(
+            self._device, "supported_fan_speeds", AC.FanSpeed.list())
+
+        # Convert Midea swing modes to strings
+        self._fan_modes = [m.name.capitalize()
+                           for m in supported_fan_speeds]
 
         # Fetch supported swing modes
         supported_swing_modes = getattr(
@@ -250,18 +257,35 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     @property
     def fan_modes(self) -> list[str]:
         """Return the supported fan modes."""
+
+        # Add "Custom" to the list if a device supports custom fan speeds, and is using a custom speed
+        if (getattr(self._device, "supports_custom_fan_speed", False)
+                and not isinstance(self._device.fan_speed, AC.FanSpeed)):
+            return [_FAN_CUSTOM] + self._fan_modes
+
         return self._fan_modes
 
     @property
     def fan_mode(self) -> str:
         """Return the current fan speed mode."""
-        return self._device.fan_speed.name.capitalize()
+        fan_speed = self._device.fan_speed
+
+        if isinstance(fan_speed, AC.FanSpeed):
+            return fan_speed.name.capitalize()
+        elif isinstance(fan_speed, int):
+            return _FAN_CUSTOM
+
+        # Never expect to get here
+        assert False, "fan_mode is neither int or AC.FanSpeed"
 
     async def async_set_fan_mode(self, fan_mode: str) -> None:
         """Set the fan mode."""
-        self._device.fan_speed = AC.FanSpeed.get_from_name(
-            fan_mode.upper(), self._device.fan_speed)
 
+        # Don't override custom fan speeds
+        if fan_mode == _FAN_CUSTOM:
+            return
+
+        self._device.fan_speed = AC.FanSpeed.get_from_name(fan_mode.upper())
         await self._apply()
 
     @property
