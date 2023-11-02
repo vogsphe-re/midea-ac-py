@@ -83,14 +83,15 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
     """Unload a config entry."""
     # Remove the coordinator from global data
     try:
-        hass.data[DOMAIN].pop(config_entry.data[CONF_ID])
+        hass.data[DOMAIN].pop(config_entry.entry_id)
     except KeyError:
         _LOGGER.warning("Failed remove device from global data.")
 
     await hass.config_entries.async_forward_entry_unload(config_entry, "climate")
     await hass.config_entries.async_forward_entry_unload(config_entry, "sensor")
-    await hass.config_entries.async_forward_entry_unload(config_entry, "switch")
     await hass.config_entries.async_forward_entry_unload(config_entry, "binary_sensor")
+    await hass.config_entries.async_forward_entry_unload(config_entry, "switch")
+    await hass.config_entries.async_forward_entry_unload(config_entry, "number")
 
     return True
 
