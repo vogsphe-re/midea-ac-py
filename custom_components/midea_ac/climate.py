@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 
+import voluptuous as vol
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (PRESET_AWAY, PRESET_BOOST,
                                                     PRESET_ECO, PRESET_NONE,
@@ -13,8 +14,11 @@ from homeassistant.components.climate.const import (PRESET_AWAY, PRESET_BOOST,
                                                     SUPPORT_TARGET_TEMPERATURE,
                                                     HVACMode)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS, TEMP_FAHRENHEIT
+from homeassistant.const import (ATTR_TEMPERATURE, CONF_ENABLED, TEMP_CELSIUS,
+                                 TEMP_FAHRENHEIT)
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from msmart.device import AirConditioner as AC
 
@@ -61,6 +65,17 @@ async def async_setup_entry(
     add_entities([
         MideaClimateACDevice(hass, coordinator, config_entry.options)
     ])
+
+    # Add a service to control 'follow me' function
+    if helpers.property_exists(coordinator.device, "follow_me"):
+        platform = entity_platform.async_get_current_platform()
+        platform .async_register_entity_service(
+            "set_follow_me",
+            {
+                vol.Required(CONF_ENABLED): cv.boolean,
+            },
+            "async_set_follow_me",
+        )
 
 
 class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
@@ -201,6 +216,22 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     def should_poll(self) -> bool:
         """Poll the appliance for changes, there is no notification capability in the Midea API"""
         return not self._use_fan_only_workaround
+
+    @property
+    def extra_state_attributes(self) -> dict[str, str]:
+        """Return device specific state attributes."""
+        state_attributes = {}
+
+        if hasattr(self._device, "follow_me"):
+            state_attributes["follow_me"] = getattr(
+                self._device, "follow_me")
+
+        return state_attributes
+
+    async def async_set_follow_me(self, enabled: bool) -> None:
+        """Set 'follow me' mode."""
+        self._device.follow_me = enabled
+        await self._apply()
 
     @property
     def supported_features(self) -> int:
