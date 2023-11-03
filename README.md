@@ -16,11 +16,19 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
 
 ## Features
 * Automatic device discovery and configuration via the GUI.
-* Device capability detection. Only supported modes and functions are available.
+* Device capability detection. Only supported modes, presets and fan speeds are displayed.
 * Support for sleep, eco, boost (turbo) and away (freeze protection) presets.
-* Switch entity for device display.
+* Switch entity for device display.<sup>1</sup>
 * Binary sensor entity for device filter alert.
 * Minimum and maximum target temperatures from device.
+* Number entity for fan speed if devices support custom speeds.
+* Service to enable "Follow Me" function.<sup>2</sup>
+
+<small>
+
+1. Device dependent. Some devices only support display control via IR.
+2. Experimental. "Follow Me" requires the IR remote to transmit temperature data. More info [here](https://github.com/mill1000/midea-msmart/pull/91).
+</small>
 
 ## Install Via HACS
 
