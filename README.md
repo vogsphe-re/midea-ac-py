@@ -2,7 +2,7 @@
 [![Code Quality Checks](https://github.com/mill1000/midea-ac-py/actions/workflows/checks.yml/badge.svg)](https://github.com/mill1000/midea-ac-py/actions/workflows/checks.yml)
 [![Validate with hassfest](https://github.com/mill1000/midea-ac-py/actions/workflows/hassfest.yml/badge.svg)](https://github.com/mill1000/midea-ac-py/actions/workflows/hassfest.yml)
 [![HACS Action](https://github.com/mill1000/midea-ac-py/actions/workflows/hacs.yml/badge.svg)](https://github.com/mill1000/midea-ac-py/actions/workflows/hacs.yml)
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 
 Home Assistant custom integration to control Midea (and associated brands) air conditioners via LAN.
 
@@ -31,9 +31,9 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
 </small>
 
 ## Install Via HACS
+[![Install via HACs on your Home Assistant instance.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=mill1000&repository=midea-ac-py&category=integrations)
 
-1. Add this repository (https://github.com/mill1000/midea-ac-py) as a [custom repository](https://hacs.xyz/docs/faq/custom_repositories/).
-2. Install via HACS normally.
+Or search HACS integrations for "Midea Smart AC".
 
 ## Install Manually
 1. Locate the `custom_components` directory in your Home Assistant configuration directory. It may need to be created.
