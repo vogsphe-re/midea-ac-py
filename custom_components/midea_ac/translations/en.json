@@ -81,7 +81,8 @@
               "low": "Low",
               "medium": "Medium",
               "high": "High",
-              "auto": "Auto"
+              "auto": "Auto",
+              "custom": "Custom"
             }
           },
           "swing_mode": {
