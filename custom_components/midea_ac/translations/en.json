@@ -70,5 +70,30 @@
         }
       }
     }
+  },
+  "entity": {
+    "climate": {
+      "midea_ac": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "Silent": "Silent",
+              "Low": "Low",
+              "Medium": "Medium",
+              "High": "High",
+              "Auto": "Auto"
+            }
+          },
+          "swing_mode": {
+            "state": {
+              "Off": "Off",
+              "Vertical": "Vertical",
+              "Horizontal": "Horizontal",
+              "Both": "Both"
+            }
+          }
+        }
+      }
+    }
   }
 }

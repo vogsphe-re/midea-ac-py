@@ -81,6 +81,8 @@ async def async_setup_entry(
 class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     """Climate entity for Midea AC device."""
 
+    _attr_translation_key = DOMAIN
+
     def __init__(self,
                  hass: HomeAssistant,
                  coordinator: MideaDeviceUpdateCoordinator,
