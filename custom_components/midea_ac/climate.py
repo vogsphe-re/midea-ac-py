@@ -30,7 +30,7 @@ from .coordinator import MideaCoordinatorEntity, MideaDeviceUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-_FAN_CUSTOM = "Custom"
+_FAN_CUSTOM = "custom"
 
 # Dictionaries to convert from Midea mode to HA mode
 _OPERATIONAL_MODE_TO_HVAC_MODE: dict[AC.OperationalMode, HVACMode] = {
@@ -80,6 +80,8 @@ async def async_setup_entry(
 
 class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     """Climate entity for Midea AC device."""
+
+    _attr_translation_key = DOMAIN
 
     def __init__(self,
                  hass: HomeAssistant,
@@ -144,7 +146,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
             self._device, "supported_fan_speeds", AC.FanSpeed.list())
 
         # Convert Midea swing modes to strings
-        self._fan_modes = [m.name.capitalize()
+        self._fan_modes = [m.name.lower()
                            for m in supported_fan_speeds]
 
         # Fetch supported swing modes
@@ -156,7 +158,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
             self._supported_features |= SUPPORT_SWING_MODE
 
         # Convert Midea swing modes to strings
-        self._swing_modes = [m.name.capitalize()
+        self._swing_modes = [m.name.lower()
                              for m in supported_swing_modes]
 
         # Dump all supported modes for debug
@@ -281,7 +283,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     @property
     def swing_mode(self) -> str:
         """Return the current swing mode."""
-        return self._device.swing_mode.name.capitalize()
+        return self._device.swing_mode.name.lower()
 
     async def async_set_swing_mode(self, swing_mode: str) -> None:
         """Set the swing mode."""
@@ -307,7 +309,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
         fan_speed = self._device.fan_speed
 
         if isinstance(fan_speed, AC.FanSpeed):
-            return fan_speed.name.capitalize()
+            return fan_speed.name.lower()
         elif isinstance(fan_speed, int):
             return _FAN_CUSTOM
 
