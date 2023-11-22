@@ -23,6 +23,10 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
 * Minimum and maximum target temperatures from device.
 * Number entity for fan speed if devices support custom speeds.
 * Service to enable "Follow Me" function.<sup>2</sup>
+* Translations
+  * English
+  * Slovenčina
+  * [Help contribute a new language](https://github.com/mill1000/midea-ac-py/issues/54)
 
 <small>
 
