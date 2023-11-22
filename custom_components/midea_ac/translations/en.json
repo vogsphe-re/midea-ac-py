@@ -77,19 +77,19 @@
         "state_attributes": {
           "fan_mode": {
             "state": {
-              "Silent": "Silent",
-              "Low": "Low",
-              "Medium": "Medium",
-              "High": "High",
-              "Auto": "Auto"
+              "silent": "Silent",
+              "low": "Low",
+              "medium": "Medium",
+              "high": "High",
+              "auto": "Auto"
             }
           },
           "swing_mode": {
             "state": {
-              "Off": "Off",
-              "Vertical": "Vertical",
-              "Horizontal": "Horizontal",
-              "Both": "Both"
+              "off": "Off",
+              "vertical": "Vertical",
+              "horizontal": "Horizontal",
+              "both": "Both"
             }
           }
         }
