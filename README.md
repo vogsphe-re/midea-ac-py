@@ -24,7 +24,9 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
 * Number entity for fan speed if devices support custom speeds.
 * Service to enable "Follow Me" function.<sup>2</sup>
 * Translations
+  * Català
   * English
+  * Español
   * Magyar
   * Polski
   * Slovenčina
