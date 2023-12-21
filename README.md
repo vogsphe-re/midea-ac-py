@@ -29,6 +29,7 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
   * Español
   * Hrvatski
   * Italiano
+  * 한국어
   * Magyar
   * Polski
   * Português
