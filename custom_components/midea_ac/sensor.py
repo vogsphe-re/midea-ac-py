@@ -6,7 +6,7 @@ import logging
 from homeassistant.components.sensor import (SensorDeviceClass, SensorEntity,
                                              SensorStateClass)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import TEMP_CELSIUS
+from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -87,7 +87,7 @@ class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
     @property
     def native_unit_of_measurement(self) -> str:
         """Return the native units pf this entity."""
-        return TEMP_CELSIUS
+        return UnitOfTemperature.CELSIUS
 
     @property
     def native_value(self) -> float | None:
