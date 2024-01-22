@@ -11,8 +11,8 @@ from homeassistant.components.climate.const import (PRESET_AWAY, PRESET_BOOST,
                                                     ClimateEntityFeature,
                                                     HVACMode)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (ATTR_TEMPERATURE, CONF_ENABLED, TEMP_CELSIUS,
-                                 TEMP_FAHRENHEIT)
+from homeassistant.const import (ATTR_TEMPERATURE, CONF_ENABLED,
+                                 UnitOfTemperature)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import entity_platform
@@ -176,7 +176,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
 
         # Display on the AC should use the same unit as homeassistant
         helpers.set_properties(self._device, ["fahrenheit", "fahrenheit_unit"],
-                               self.hass.config.units.temperature_unit == TEMP_FAHRENHEIT)
+                               self.hass.config.units.temperature_unit == UnitOfTemperature.FAHRENHEIT)
 
         # Apply via the coordinator
         await self.coordinator.apply()
@@ -241,7 +241,7 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     @property
     def temperature_unit(self) -> str:
         """Return the unit of measurement."""
-        return TEMP_CELSIUS
+        return UnitOfTemperature.CELSIUS
 
     @ property
     def min_temp(self) -> float:
