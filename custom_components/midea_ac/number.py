@@ -49,9 +49,14 @@ class MideaFanSpeedNumber(MideaCoordinatorEntity, NumberEntity):
         }
 
     @property
+    def has_entity_name(self) -> bool:
+        """Indicates if entity follows naming conventions."""
+        return True
+
+    @property
     def name(self) -> str:
         """Return the name of this entity."""
-        return f"{DOMAIN}_fan_speed_{self._device.id}"
+        return "Fan speed"
 
     @property
     def unique_id(self) -> str:

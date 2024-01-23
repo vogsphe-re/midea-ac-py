@@ -188,14 +188,20 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
             "identifiers": {
                 (DOMAIN, self._device.id)
             },
-            "name": self.name,
+            "name": f"Midea AC {self._device.id}",
             "manufacturer": "Midea",
         }
 
     @property
-    def name(self) -> str:
+    def has_entity_name(self) -> bool:
+        """Indicates if entity follows naming conventions."""
+        return True
+
+    @property
+    def name(self) -> None:
         """Return the name of the climate device."""
-        return f"{DOMAIN}_{self._device.id}"
+        # Return None to use device name
+        return None
 
     @property
     def unique_id(self) -> str:
