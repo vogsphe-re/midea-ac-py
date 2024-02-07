@@ -9,6 +9,14 @@ Home Assistant custom integration to control Midea (and associated brands) air c
 Midea is an OEM for many brands including:
 Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Rotenso, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and more.
 
+If a devices uses one of the following apps it is likely supported:
+* Artic King (com.arcticking.ac)
+* Midea Air (com.midea.aircondition.obm)
+* NetHome Plus (com.midea.aircondition)
+* SmartHome/MSmartHome (com.midea.ai.overseas)
+* Toshiba AC NA (com.midea.toshiba)
+* 美的美居 (com.midea.ai.appliances)
+
 __Note: Only air conditioner devices (type 0xAC) are supported.__ 
 
 See [Getting Device Info](#getting-device-info) to determine if a device is supported.
