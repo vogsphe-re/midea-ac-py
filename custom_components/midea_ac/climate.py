@@ -66,7 +66,7 @@ async def async_setup_entry(
     # Add a service to control 'follow me' function
     if helpers.property_exists(coordinator.device, "follow_me"):
         platform = entity_platform.async_get_current_platform()
-        platform .async_register_entity_service(
+        platform.async_register_entity_service(
             "set_follow_me",
             {
                 vol.Required(CONF_ENABLED): cv.boolean,
