@@ -28,7 +28,7 @@ async def async_setup_entry(
     # Fetch coordinator from global data
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    # Create sensor entities from device
+    # Create sensor entities
     add_entities([
         MideaTemperatureSensor(coordinator, "indoor_temperature"),
         MideaTemperatureSensor(coordinator, "outdoor_temperature"),

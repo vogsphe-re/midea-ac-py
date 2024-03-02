@@ -40,7 +40,7 @@ class MideaDisplaySwitch(MideaCoordinatorEntity, SwitchEntity):
         MideaCoordinatorEntity.__init__(self, coordinator)
 
     async def _toggle_display(self) -> None:
-        await self.coordinator.device.toggle_display()
+        await self._device.toggle_display()
 
         await self.coordinator.async_request_refresh()
 

@@ -1,4 +1,4 @@
-"""Platform for switch integration."""
+"""Platform for number integration."""
 from __future__ import annotations
 
 import logging
@@ -28,7 +28,7 @@ async def async_setup_entry(
     # Fetch coordinator from global data
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    # Create sensor entities from device if supported
+    # Create entity if supported
     if getattr(coordinator.device, "supports_custom_fan_speed", False):
         add_entities([MideaFanSpeedNumber(coordinator)])
 
