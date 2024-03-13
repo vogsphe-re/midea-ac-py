@@ -9,7 +9,7 @@ Home Assistant custom integration to control Midea (and associated brands) air c
 Midea is an OEM for many brands including:
 Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Rotenso, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG and more.
 
-If a devices uses one of the following apps it is likely supported:
+A device is likely supported if it uses one of the following Android apps or it's iOS equivalent.
 * Artic King (com.arcticking.ac)
 * Midea Air (com.midea.aircondition.obm)
 * NetHome Plus (com.midea.aircondition)
@@ -24,13 +24,14 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
 
 ## Features
 * Automatic device discovery and configuration via the GUI.
-* Device capability detection. Only supported modes, presets and fan speeds are displayed.
+* Device capability detection. Only supported modes, presets, fan speeds and functions are displayed.
 * Support for sleep, eco, boost (turbo) and away (freeze protection) presets.
 * Switch entity for device display.<sup>1</sup>
 * Binary sensor entity for device filter alert.
 * Minimum and maximum target temperatures from device.
 * Number entity for fan speed if devices support custom speeds.
 * Service to enable "Follow Me" function.<sup>2</sup>
+* Select entities to control swing angle when supported.
 * Translations
   * Català
   * English
