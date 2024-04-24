@@ -99,3 +99,68 @@ class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
     def native_value(self) -> float | None:
         """Return the current native value."""
         return getattr(self._device, self._prop, None)
+    
+class MideaHumiditySensor(MideaCoordinatorEntity, SensorEntity):
+    """Humidity sensor for Midea AC."""
+
+    def __init__(self,
+                 coordinator: MideaDeviceUpdateCoordinator,
+                 prop: str) -> None:
+        MideaCoordinatorEntity.__init__(self, coordinator)
+
+        self._prop = prop
+        self._name = prop.replace("_", " ").capitalize()
+
+    @property
+    def device_info(self) -> dict:
+        """Return info for device registry."""
+        return {
+            "identifiers": {
+                (DOMAIN, self._device.id)
+            },
+        }
+
+    @property
+    def has_entity_name(self) -> bool:
+        """Indicates if entity follows naming conventions."""
+        return True
+
+    @property
+    def name(self) -> str:
+        """Return the name of this entity."""
+        return self._name
+
+    @property
+    def unique_id(self) -> str:
+        """Return the unique ID of this entity."""
+        return f"{self._device.id}-{self._prop}"
+
+    @property
+    def available(self) -> bool:
+        """Check entity availability."""
+        # Sensor is unavailable if device is offline
+        if not super().available:
+            return False
+
+        # Sensor is unavailable if value is None
+        return self.native_value is not None
+
+    @property
+    def device_class(self) -> str:
+        """Return the device class of this entity."""
+        return SensorDeviceClass.HUMIDITY
+
+    @property
+    def state_class(self) -> str:
+        """Return the state class of this entity."""
+        return SensorStateClass.MEASUREMENT
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        """Return the native units pf this entity."""
+        return UnitOfHumidity.PERCENT
+
+    @property
+    def native_value(self) -> float | None:
+        """Return the current native value."""
+        return getattr(self._device, self._prop, None)
