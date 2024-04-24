@@ -21,7 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Setup Midea Smart AC device from a config entry."""
 
-    _LOGGER.info("Starting midea-ac-py. Using msmart-ng version %s.",
+    _LOGGER.info("Starting midea-ac-py. Using msmart-vog version %s.",
                  MSMART_VERISON)
 
     # Ensure the global data dict exists
