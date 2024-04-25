@@ -8,7 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from msmart.device import AirConditioner as AC
+from msmart-vog.device import AirConditioner as AC
 
 from .const import DOMAIN
 from .coordinator import MideaCoordinatorEntity, MideaDeviceUpdateCoordinator

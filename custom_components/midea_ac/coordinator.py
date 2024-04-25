@@ -7,7 +7,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.debounce import Debouncer
 from homeassistant.helpers.update_coordinator import (CoordinatorEntity,
                                                       DataUpdateCoordinator)
-from msmart.device import AirConditioner as AC
+from msmart-vog.device import AirConditioner as AC
 
 from .const import DOMAIN
 
