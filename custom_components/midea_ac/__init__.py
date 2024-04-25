@@ -7,9 +7,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from msmart-vog import __version__ as MSMART_VERISON
-from msmart-vog.device import AirConditioner as AC
-from msmart-vog.lan import AuthenticationError
+from msmart_vog import __version__ as MSMART_VERISON
+from msmart_vog.device import AirConditioner as AC
+from msmart_vog.lan import AuthenticationError
 
 from . import helpers
 from .const import CONF_KEY, CONF_MAX_CONNECTION_LIFETIME, DOMAIN
