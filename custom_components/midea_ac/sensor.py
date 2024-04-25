@@ -3,8 +3,7 @@ from __future__ import annotations
 
 import logging
 
-from homeassistant.components.sensor import (SensorDeviceClass, SensorEntity,
-                                             SensorStateClass)
+from homeassistant.components.sensor import (SensorDeviceClass, SensorEntity,SensorStateClass)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
@@ -32,8 +31,8 @@ async def async_setup_entry(
     add_entities([
         MideaTemperatureSensor(coordinator, "indoor_temperature"),
         MideaTemperatureSensor(coordinator, "outdoor_temperature"),
+        MideaHumiditySensor(coordinator, "indoor_humidity"),
     ])
-
 
 class MideaTemperatureSensor(MideaCoordinatorEntity, SensorEntity):
     """Temperature sensor for Midea AC."""
