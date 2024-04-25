@@ -97,10 +97,10 @@ Name | Default | Description
 **Maximum Connection Lifetime** | Empty | Limit the time (in seconds) a connection to the device will be used before reconnecting. If left blank, the connection will persist indefinitely. If your device disconnects at regular intervals, set this to a value below the interval.
 
 ## Getting Device Info
-Use the `midea-discover` command from [msmart-ng](https://github.com/mill1000/midea-msmart) to obtain device information.
+Use the `midea-discover` command from [msmart-vog](https://github.com/mill1000/midea-msmart) to obtain device information.
 ```shell
-pip install msmart-ng
-msmart-ng discover
+pip install msmart-vog
+msmart-vog discover
 ```
 Check the output to ensure the type is 0xAC and the `supported` property is True.
 
