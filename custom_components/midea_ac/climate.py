@@ -17,7 +17,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from msmart_vog.device import AirConditioner as AC
+from msmartvog.device import AirConditioner as AC
 
 from . import helpers
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP,
