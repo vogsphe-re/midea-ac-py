@@ -8,8 +8,8 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from msmart-vog.device import AirConditioner as AC
-from msmart-vog.utils import MideaIntEnum
+from msmart_vog.device import AirConditioner as AC
+from msmart_vog.utils import MideaIntEnum
 
 from .const import DOMAIN
 from .coordinator import MideaCoordinatorEntity, MideaDeviceUpdateCoordinator
