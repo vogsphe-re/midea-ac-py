@@ -13,7 +13,7 @@
     "msmart_vog"
   ],
   "requirements": [
-    "msmart_vog>=2024.4.23"
+    "msmart_vog>=v0.0.1"
   ],
-  "version": "2024.4.23"
+  "version": "v0.0.1"
 }
