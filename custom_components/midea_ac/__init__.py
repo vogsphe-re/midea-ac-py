@@ -7,9 +7,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from msmart_vog import __version__ as MSMART_VERISON
-from msmart_vog.device import AirConditioner as AC
-from msmart_vog.lan import AuthenticationError
+from msmart-vog import __version__ as MSMART_VERISON
+from msmart-vog.device import AirConditioner as AC
+from msmart-vog.lan import AuthenticationError
 
 from . import helpers
 from .const import CONF_KEY, CONF_MAX_CONNECTION_LIFETIME, DOMAIN
@@ -21,7 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Setup Midea Smart AC Dev device from a config entry."""
 
-    _LOGGER.info("Starting midea-ac-py. Using msmart_vog version %s.",
+    _LOGGER.info("Starting midea-ac-py. Using msmart-vog version %s.",
                  MSMART_VERISON)
 
     # Ensure the global data dict exists
