@@ -21,7 +21,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     add_entities: AddEntitiesCallback,
 ) -> None:
-    """Setup the number platform for Midea Smart AC."""
+    """Setup the number platform for Midea Smart AC Dev."""
 
     _LOGGER.info("Setting up number platform.")
 

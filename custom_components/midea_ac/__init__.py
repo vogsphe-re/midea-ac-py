@@ -1,4 +1,4 @@
-"""Integration for Midea Smart AC."""
+"""Integration for Midea Smart AC Dev."""
 from __future__ import annotations
 
 import logging
@@ -19,7 +19,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
-    """Setup Midea Smart AC device from a config entry."""
+    """Setup Midea Smart AC Dev device from a config entry."""
 
     _LOGGER.info("Starting midea-ac-py. Using msmart_vog version %s.",
                  MSMART_VERISON)

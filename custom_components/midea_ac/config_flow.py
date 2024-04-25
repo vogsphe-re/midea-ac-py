@@ -1,4 +1,4 @@
-"""Config flow for Midea Smart AC."""
+"""Config flow for Midea Smart AC Dev."""
 from __future__ import annotations
 
 from typing import Any, Optional
@@ -29,7 +29,7 @@ _DEFAULT_OPTIONS = {
 
 
 class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Config flow for Midea Smart AC."""
+    """Config flow for Midea Smart AC Dev."""
 
     async def async_step_user(self, _) -> FlowResult:
         """Handle a config flow initialized by the user."""
@@ -212,7 +212,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class MideaOptionsFlow(OptionsFlow):
-    """Options flow from Midea Smart AC."""
+    """Options flow from Midea Smart AC Dev."""
 
     def __init__(self, config_entry: ConfigEntry) -> None:
         self.config_entry = config_entry

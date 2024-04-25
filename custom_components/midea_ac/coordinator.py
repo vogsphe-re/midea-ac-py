@@ -1,4 +1,4 @@
-"""Device update coordination for Midea Smart AC."""
+"""Device update coordination for Midea Smart AC Dev."""
 
 import datetime
 import logging
@@ -15,7 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class MideaDeviceUpdateCoordinator(DataUpdateCoordinator):
-    """Device update coordinator for Midea Smart AC."""
+    """Device update coordinator for Midea Smart AC Dev."""
 
     def __init__(self, hass: HomeAssistant, device: AC) -> None:
         super().__init__(
@@ -53,7 +53,7 @@ class MideaDeviceUpdateCoordinator(DataUpdateCoordinator):
 
 
 class MideaCoordinatorEntity(CoordinatorEntity):
-    """Coordinator entity for Midea Smart AC."""
+    """Coordinator entity for Midea Smart AC Dev."""
 
     def __init__(self, coordinator: MideaDeviceUpdateCoordinator) -> None:
         super().__init__(coordinator)

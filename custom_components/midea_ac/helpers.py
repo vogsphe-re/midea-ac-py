@@ -1,4 +1,4 @@
-"""Helper methods for Midea Smart AC."""
+"""Helper methods for Midea Smart AC Dev."""
 from __future__ import annotations
 
 import logging

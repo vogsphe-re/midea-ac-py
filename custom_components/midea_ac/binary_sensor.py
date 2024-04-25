@@ -1,4 +1,4 @@
-"""Binary platform for Midea Smart AC."""
+"""Binary platform for Midea Smart AC Dev."""
 from __future__ import annotations
 
 import logging
@@ -22,7 +22,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     add_entities: AddEntitiesCallback,
 ) -> None:
-    """Setup the binary sensor platform for Midea Smart AC."""
+    """Setup the binary sensor platform for Midea Smart AC Dev."""
 
     _LOGGER.info("Setting up binary sensor platform.")
 

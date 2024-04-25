@@ -1,4 +1,4 @@
-"""Switch platform for Midea Smart AC."""
+"""Switch platform for Midea Smart AC Dev."""
 from __future__ import annotations
 
 import logging
@@ -21,7 +21,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     add_entities: AddEntitiesCallback,
 ) -> None:
-    """Setup the switch platform for Midea Smart AC."""
+    """Setup the switch platform for Midea Smart AC Dev."""
 
     _LOGGER.info("Setting up switch platform.")
 

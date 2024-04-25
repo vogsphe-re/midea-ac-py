@@ -1,4 +1,4 @@
-# Midea Smart AC
+# Midea Smart AC Dev
 [![Code Quality Checks](https://github.com/mill1000/midea-ac-py/actions/workflows/checks.yml/badge.svg)](https://github.com/mill1000/midea-ac-py/actions/workflows/checks.yml)
 [![Validate with hassfest](https://github.com/mill1000/midea-ac-py/actions/workflows/hassfest.yml/badge.svg)](https://github.com/mill1000/midea-ac-py/actions/workflows/hassfest.yml)
 [![HACS Action](https://github.com/mill1000/midea-ac-py/actions/workflows/hacs.yml/badge.svg)](https://github.com/mill1000/midea-ac-py/actions/workflows/hacs.yml)
@@ -56,7 +56,7 @@ See [Getting Device Info](#getting-device-info) to determine if a device is supp
 ## Install Via HACS
 [![Install via HACs on your Home Assistant instance.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=mill1000&repository=midea-ac-py&category=integrations)
 
-Or search HACS integrations for "Midea Smart AC".
+Or search HACS integrations for "Midea Smart AC Dev".
 
 ## Install Manually
 1. Locate the `custom_components` directory in your Home Assistant configuration directory. It may need to be created.
@@ -64,7 +64,7 @@ Or search HACS integrations for "Midea Smart AC".
 3. Restart Home Assistant.
 
 ## Configuration
-Midea Smart AC is configured via the GUI. See [the HA docs](https://www.home-assistant.io/getting-started/integration/) for more details.
+Midea Smart AC Dev is configured via the GUI. See [the HA docs](https://www.home-assistant.io/getting-started/integration/) for more details.
 
 Devices can be automatically discovered and configured or manually configured.
 
