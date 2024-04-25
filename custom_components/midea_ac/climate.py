@@ -274,6 +274,12 @@ class MideaClimateACDevice(MideaCoordinatorEntity, ClimateEntity):
     def current_temperature(self) -> float | None:
         """Return the current temperature."""
         return self._device.indoor_temperature
+    
+    @property
+    def current_humidity(self) -> float | None:
+        """Return the current humidity."""
+        return self._device.indoor_humidity
+
 
     @property
     def target_temperature(self) -> float | None:
