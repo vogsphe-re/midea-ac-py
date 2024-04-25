@@ -10,10 +10,10 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/vogsphe-re/midea-ac-py/issues",
   "loggers": [
-    "msmartvog"
+    "vogmidea"
   ],
   "requirements": [
-    "msmartvog>=v0.0.1"
+    "vogmidea>=v0.0.1"
   ],
   "version": "v0.0.1"
 }

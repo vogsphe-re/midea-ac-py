@@ -9,10 +9,10 @@ from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.const import CONF_HOST, CONF_ID, CONF_PORT, CONF_TOKEN
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
-from msmartvog.const import DeviceType
-from msmartvog.device import AirConditioner as AC
-from msmartvog.discover import Discover
-from msmartvog.lan import AuthenticationError
+from vogmidea.const import DeviceType
+from vogmidea.device import AirConditioner as AC
+from vogmidea.discover import Discover
+from vogmidea.lan import AuthenticationError
 
 from .const import (CONF_ADDITIONAL_OPERATION_MODES, CONF_BEEP, CONF_KEY,
                     CONF_MAX_CONNECTION_LIFETIME, CONF_SHOW_ALL_PRESETS,
